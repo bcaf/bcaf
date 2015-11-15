@@ -29,7 +29,7 @@ class CutOpenEvent : Event {
     int state;
     
     float bacJelAmount; //in cl
-    const float BACJEL_ADDED_PER_SECOND = 0.3;
+    const float BACJEL_ADDED_PER_SECOND = 0.3F;
     float bacJelAmountNeeded;
     
     public CutOpenEvent(Body body_) {
@@ -37,12 +37,12 @@ class CutOpenEvent : Event {
         
         state = STATE_NEEDS_BACTERIAL;
         bacJelAmount = 0.0F;
-        bacJelAmountNeeded = 2.0F + 1.0*body.numPlayers;
+        bacJelAmountNeeded = 2.0F + 1.0F*body.numPlayers;
     }
     
     void Update() {
         if (state == STATE_NEEDS_BACTERIAL) {
-            Fiducial bacJelFid = body.fs[body.BACTERIALJEL];
+            Fiducial bacJelFid = body.fs[Body.FID_BACTERIALJEL];
             if (bacJelFid.active) {
                 bacJelAmount += BACJEL_ADDED_PER_SECOND * Time.deltaTime;
                 
@@ -54,7 +54,7 @@ class CutOpenEvent : Event {
                 drawNeedsBacterial();
             }
         } else if (state == STATE_CUTTING) {
-            Fiducial scalpel = body.fs[body.FID_SCALPEL];
+            Fiducial scalpel = body.fs[Body.FID_SCALPEL];
             
             if (scalpel.active) {
                 
@@ -68,7 +68,7 @@ class CutOpenEvent : Event {
         
         float bloodDiff = -1.0F;
         body.bloodAmount += bloodDiff;
-        Debug.Log("CutOpenEvent changed bloodAmount with" + bloodDiff + "(" + bloodAmount + "cl left");
+        Debug.Log("CutOpenEvent changed bloodAmount with" + bloodDiff + "(" + body.bloodAmount + "cl left");
     }
     
     //TODO: Show some type of animation showing the amount of bacterial jel applied slowly filling up?

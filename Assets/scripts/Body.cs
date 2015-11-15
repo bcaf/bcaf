@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 class Fiducial {
@@ -23,13 +24,13 @@ class Body : MonoBehaviour {
     private const int NUM_FIDUCIALS = 50;
     private const int NUM_GLOVES = 4;
     
-    private const int FID_GLOVE0 = 0;
-    private const int FID_GLOVE1 = 1;
-    private const int FID_GLOVE2 = 2;
-    private const int FID_GLOVE3 = 3;
-    private const int FID_BACTERIALJEL = 4;
-    private const int FID_SCALPEL = 5;
-    private const float START_BLOOD_AMOUNT = 5000.0F;
+    public const int FID_GLOVE0 = 0;
+    public const int FID_GLOVE1 = 1;
+    public const int FID_GLOVE2 = 2;
+    public const int FID_GLOVE3 = 3;
+    public const int FID_BACTERIALJEL = 4;
+    public const int FID_SCALPEL = 5;
+    public const float START_BLOOD_AMOUNT = 5000.0F;
     
     
     
@@ -38,7 +39,7 @@ class Body : MonoBehaviour {
     string state; //"notstarted", "ingame" or "gameover"
     List<Event> events;
     
-    int numPlayers;
+    public int numPlayers;
     public float bloodAmount;
     
     void Start() {
@@ -97,10 +98,10 @@ class Body : MonoBehaviour {
 //            int numActiveGloves = fs[GLOVE0].active + fs[GLOVE1].active +
 //                fs[GLOVE2].active + fs[GLOVE3].active;
 			int numActiveGloves = 0;
-			numActiveGloves += fs[GLOVE0].active ? 1 : 0;
-			numActiveGloves += fs[GLOVE1].active ? 1 : 0;
-			numActiveGloves += fs[GLOVE2].active ? 1 : 0;
-			numActiveGloves += fs[GLOVE3].active ? 1 : 0;
+			numActiveGloves += fs[FID_GLOVE0].active ? 1 : 0;
+            numActiveGloves += fs[FID_GLOVE1].active ? 1 : 0;
+            numActiveGloves += fs[FID_GLOVE2].active ? 1 : 0;
+            numActiveGloves += fs[FID_GLOVE3].active ? 1 : 0;
             numPlayers = NUM_GLOVES - numActiveGloves;
             changeStateToIngame();
         }
@@ -118,5 +119,11 @@ class Body : MonoBehaviour {
     //TODO: drawgui
     void drawGUI() {
         //Draws the gui, that shows things like bloodAmount;
+    }
+    
+    void OnGUI() {
+        Text bloodValueText;
+        bloodValueText = GameObject.Find ("value_blood").GetComponent<Text>();
+        bloodValueText.text = bloodAmount.ToString();
     }
 }
