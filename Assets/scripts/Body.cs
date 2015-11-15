@@ -57,12 +57,15 @@ class Body : MonoBehaviour {
     }
     
     void changeStateToIngame() {
-        events.Add(new CutOpenEvent()); //Add initial event
+        events.Add(new CutOpenEvent(ref this)); //Add initial event
         state = "ingame";
     }
     
     void changeStateToGameOver() {
         state = "gameover";
+        foreach (Event e in events) {
+            e.gameOverSignal();
+        }
     }
     
     void Update() {
@@ -92,8 +95,12 @@ class Body : MonoBehaviour {
     }
     
     void updateIngame() {
+        foreach (Event e in events) {
+            e.update();
+        }
         
         if (bloodAmount <= 0.0F) {
+            changeStateToGameOver();
         }
     }
     

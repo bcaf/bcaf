@@ -1,11 +1,18 @@
 class Event : MonoBehaviour {
     bool active;
+    Body body;
     
-    void Setup() {
+    Event(ref Body body_) {
+        body = body_;
     }
     
-    void Update(ref Body body) {
+    void Update() {
         body.bloodAmount -= 1.0;
+    }
+    
+    /*this is called whenever gameOver happens.
+    Cleanly stop current animations and things like that.*/
+    void gameOverSignal() {
     }
 }
 
