@@ -23,11 +23,12 @@ class Body : MonoBehaviour {
     private const int NUM_FIDUCIALS = 50;
     private const int NUM_GLOVES = 4;
     
-    private const int GLOVE0 = 0;
-    private const int GLOVE1 = 1;
-    private const int GLOVE2 = 2;
-    private const int GLOVE3 = 3;
-    private const int BACTERIALJEL = 4;
+    private const int FID_GLOVE0 = 0;
+    private const int FID_GLOVE1 = 1;
+    private const int FID_GLOVE2 = 2;
+    private const int FID_GLOVE3 = 3;
+    private const int FID_BACTERIALJEL = 4;
+    private const int FID_SCALPEL = 5;
     private const float START_BLOOD_AMOUNT = 5000.0F;
     
     
