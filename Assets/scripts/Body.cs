@@ -30,6 +30,7 @@ class Body : MonoBehaviour {
     public const int FID_GLOVE3 = 3;
     public const int FID_BACTERIALJEL = 4;
     public const int FID_SCALPEL = 5;
+    public const int FID_BLOODBAG = 6;
     public const float START_BLOOD_AMOUNT = 5000.0F;
     
     
@@ -58,16 +59,16 @@ class Body : MonoBehaviour {
     }
     
     void changeStateToGameNotStarted() {
-        state = "notstarted";
+        this.state = "notstarted";
     }
     
     void changeStateToIngame() {
-        events.Add(new CutOpenEvent(this)); //Add initial event
-        state = "ingame";
+        events.Add(new EventCutOpen(this)); //Add initial event
+        this.state = "ingame";
     }
     
     void changeStateToGameOver() {
-        state = "gameover";
+        this.state = "gameover";
         foreach (Event e in events) {
             e.gameOverSignal();
         }
@@ -81,12 +82,12 @@ class Body : MonoBehaviour {
 			fs [i].update ();
 		}
         
-        if (state == "notstarted") {
+        if (this.state == "notstarted") {
             updateGameNotStarted();
-        } else if (state == "ingame") {
+        } else if (this.state == "ingame") {
             updateIngame();
-        } else if (state == "ingame") {
-        } else if (state == "gameover") {
+        } else if (this.state == "ingame") {
+        } else if (this.state == "gameover") {
         }
     }
     
@@ -107,7 +108,7 @@ class Body : MonoBehaviour {
         }
     }
     
-    void updateIngame() {   
+    void updateIngame() {
         if (bloodAmount <= 0.0F) {
             changeStateToGameOver();
         }
