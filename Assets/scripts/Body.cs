@@ -1,17 +1,20 @@
 
+using UnityEngine;
+using System.Collections.Generic;
+
 class Fiducial {
-    int id;
-    Vector3 position;
-    float rotation;
-    bool active;
-    Fiducial(int id) {
-        id = 0;
-        position = Vector3();
+    public int id;
+    public Vector3 position;
+    public float rotation;
+    public bool active;
+    public Fiducial(int id_) {
+        id = id_;
+        position = new Vector3();
         rotation = 0.0F;
         active = false;
     }
     
-    void update() {
+    public void update() {
         //update position, rotation, active of id=id
     }
 }
@@ -29,19 +32,19 @@ class Body : MonoBehaviour {
     
     
     
-    public fs[] fs;
+    public Fiducial[] fs;
     public List<Fiducial> updatedFiducials;
     string state; //"notstarted", "ingame" or "gameover"
     List<Event> events;
     
     int numPlayers;
-    float bloodAmount;
+    public float bloodAmount;
     
-    void Setup() {
+    void Start() {
         fs = new Fiducial[NUM_FIDUCIALS];
         updatedFiducials = new List<Fiducial>();
         for (int i = 0; i < NUM_FIDUCIALS; i++) {
-            fs.Add(Fiducial(i));
+            fs[i] = new Fiducial(i);
         }
         events = new List<Event>();
         
@@ -57,7 +60,7 @@ class Body : MonoBehaviour {
     }
     
     void changeStateToIngame() {
-        events.Add(new CutOpenEvent(ref this)); //Add initial event
+        events.Add(new CutOpenEvent(this)); //Add initial event
         state = "ingame";
     }
     
@@ -69,14 +72,17 @@ class Body : MonoBehaviour {
     }
     
     void Update() {
-        foreach (Fiducial f in fs) {
-            f.update();
-        }
+//        foreach (Fiducial f in fs) {
+//            f.update();
+//        }
+		for (int i = 0; i < NUM_FIDUCIALS; i++) {
+			fs [i].update ();
+		}
         
         if (state == "notstarted") {
             updateGameNotStarted();
         } else if (state == "ingame") {
-            updateInGame();
+            updateIngame();
         } else if (state == "ingame") {
         } else if (state == "gameover") {
         }
@@ -87,18 +93,19 @@ class Body : MonoBehaviour {
     void updateGameNotStarted() {
         bool fingerPressedStart = false; //change this with an actual call
         if (fingerPressedStart) {
-            int numActiveGloves = fs[GLOVE0].active + fs[GLOVE1].active +
-                fs[GLOVE2].active + fs[GLOVE3].active;
+//            int numActiveGloves = fs[GLOVE0].active + fs[GLOVE1].active +
+//                fs[GLOVE2].active + fs[GLOVE3].active;
+			int numActiveGloves = 0;
+			numActiveGloves += fs[GLOVE0].active ? 1 : 0;
+			numActiveGloves += fs[GLOVE1].active ? 1 : 0;
+			numActiveGloves += fs[GLOVE2].active ? 1 : 0;
+			numActiveGloves += fs[GLOVE3].active ? 1 : 0;
             numPlayers = NUM_GLOVES - numActiveGloves;
             changeStateToIngame();
         }
     }
     
-    void updateIngame() {
-        foreach (Event e in events) {
-            e.update();
-        }
-        
+    void updateIngame() {   
         if (bloodAmount <= 0.0F) {
             changeStateToGameOver();
         }
