@@ -113,29 +113,66 @@ class Body : MonoBehaviour {
             changeStateToIngame();
         }
     }
+
+	Vector3 getMouseToWorldPosition() {
+		//Input.mousePosition: "The bottom-left of the screen or window is at (0, 0).
+		//The top-right of the screen or window is at (Screen.width, Screen.height).
+		
+		float tableWidth = 225.0F;
+		float tableHeight = 400.0F;
+		
+		float rx = 2.0F * (Input.mousePosition.x / Screen.width - 0.5F);
+		//rx is now -1.0 to 1.0, need to rescale so that max is tableWidth/2 = 2.0/2.0 = 1.0, so no change!
+		rx *= tableWidth / 2.0F;
+		float ry = 2.0F * (Input.mousePosition.y / Screen.height - 0.5F);
+		//ry is now -1.0 to 1.0, need to rescale so that max is tableHeight/2 = 1.85/2.0 = 0.925
+		ry *= tableHeight / 2.0F;
+		return new Vector3(rx, 15.0F, ry);
+	}
+
+	/*Updates the GameObject called objectName, moving it to newPosition and 
+	 * enabling the mesh renderer (+the children's mesh renderers) if setOn*/
+	void updateDebugObject(string objectName, Vector3 newPosition, bool setOn) {
+		GameObject debug_object = GameObject.Find(objectName);
+		debug_object.GetComponent<Renderer>().enabled = setOn;
+		debug_object.GetComponent<Transform>().position = newPosition;
+
+		//Don't forget to enable/disable the rendering of the object's children
+		foreach (Renderer r in debug_object.GetComponentsInChildren<Renderer>()) {
+			r.enabled = setOn;
+		}
+	}
     
     void updateIngame() {
+		Vector3 mouseWorldPos = getMouseToWorldPosition();
+		//Debug.Log("mouseWorldPos: " + mouseWorldPos.ToString());
+        
         if (bloodAmount <= 0.0F) {
             changeStateToGameOver();
         }
 
-		//debug stuff, use keys to place things such as scalpels and bacterial jels
+		//debug stuff, press keys to add things such as scalpels and bacterial jels to the position of the mouse.
 		if (Input.GetKeyDown(KeyCode.S)) {
 			if (Input.GetKey(KeyCode.LeftShift)) {
 				fs[FID_SCALPEL].active = false;
+				updateDebugObject("scalpel_debug", mouseWorldPos, false);
 				Debug.Log("Scalpel de-activated");
 			} else {
 				fs[FID_SCALPEL].active = true;
+				fs[FID_SCALPEL].position = mouseWorldPos;
 				Debug.Log("Scalpel activated");
+				updateDebugObject("scalpel_debug", mouseWorldPos, true);
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.J)) {
 			if (Input.GetKey(KeyCode.LeftShift)) {
 				fs[FID_BACTERIALJEL].active = false;
+				updateDebugObject("bacterialjel_debug", mouseWorldPos, false);
 				Debug.Log("Jel de-activated");
 			} else {
 				fs[FID_BACTERIALJEL].active = true;
 				Debug.Log("Jel activated");
+				updateDebugObject("bacterialjel_debug", mouseWorldPos, true);
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.B)) {
