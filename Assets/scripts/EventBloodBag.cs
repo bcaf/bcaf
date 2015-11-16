@@ -20,9 +20,9 @@ class EventBloodBag : Event {
     
     //Unity's Update function
     void Update() {
-        Fiducial bloodBag = body.fs[Body.FID_BLOODBAG];
-        if (bloodBag.active) {
-            float distanceToEvent = (bloodBag.position - this.position).magnitude;
+        Fiducial bloodBagFiducial = body.fs[Body.FID_BLOODBAG];
+        if (bloodBagFiducial.active) {
+            float distanceToEvent = (bloodBagFiducial.position - this.position).magnitude;
             if (distanceToEvent > 0.5F) {
                 Debug.Log("Blood Bag is placed, but too far away, at distance " +
                         distanceToEvent);

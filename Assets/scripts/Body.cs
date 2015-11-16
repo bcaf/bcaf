@@ -118,35 +118,53 @@ class Body : MonoBehaviour {
         if (bloodAmount <= 0.0F) {
             changeStateToGameOver();
         }
+        
+        //Input.mousePosition: "The bottom-left of the screen or window is at (0, 0).
+        //The top-right of the screen or window is at (Screen.width, Screen.height).
+        
+        tableWidth = 2.0;
+        tableHeight = 1.85;
+        
+        float rx = 2.0F * (Input.mousePosition.x / Screen.width - 0.5F);
+        //rx is now -1.0 to 1.0, need to rescale so that max is tableWidth/2 = 2.0/2.0 = 1.0, so no change!
+        rx *= tableWidth / 2.0F;
+        float ry = 2.0F * (Input.mousePosition.y / Screen.width - 0.5F);
+        //ry is now -1.0 to 1.0, need to rescale so that max is tableHeight/2 = 1.85/2.0 = 0.925
+        ry *= tableHeight / 2.0F;
+        Vector3 mouseWorldPos = Vector3(rx, ry, 0.0F);
+        
 
-		//debug stuff, use keys to place things such as scalpels and bacterial jels
-		if (Input.GetKeyDown(KeyCode.S)) {
-			if (Input.GetKey(KeyCode.LeftShift)) {
-				fs[FID_SCALPEL].active = false;
-				Debug.Log("Scalpel de-activated");
-			} else {
-				fs[FID_SCALPEL].active = true;
-				Debug.Log("Scalpel activated");
-			}
-		}
-		if (Input.GetKeyDown(KeyCode.J)) {
-			if (Input.GetKey(KeyCode.LeftShift)) {
-				fs[FID_BACTERIALJEL].active = false;
-				Debug.Log("Jel de-activated");
-			} else {
-				fs[FID_BACTERIALJEL].active = true;
-				Debug.Log("Jel activated");
-			}
-		}
-		if (Input.GetKeyDown(KeyCode.B)) {
-			if (Input.GetKey(KeyCode.LeftShift)) {
-				fs[FID_BLOODBAG].active = false;
-				Debug.Log("Bloodbag de-activated");
-			} else {
-				fs[FID_BLOODBAG].active = true;
-				Debug.Log("Bloodbag activated");
-			}
-		}
+        //debug stuff, use keys to place things such as scalpels and bacterial jels
+        if (Input.GetKeyDown(KeyCode.S)) {
+            if (Input.GetKey(KeyCode.LeftShift)) {
+                fs[FID_SCALPEL].active = false;
+                Debug.Log("Scalpel de-activated");
+            } else {
+                fs[FID_SCALPEL].active = true;
+                fs[FID_SCALPEL].position = mouseWorldPos;
+                Debug.Log("Scalpel activated");
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.J)) {
+            if (Input.GetKey(KeyCode.LeftShift)) {
+                fs[FID_BACTERIALJEL].active = false;
+                Debug.Log("Jel de-activated");
+            } else {
+                fs[FID_BACTERIALJEL].active = true;
+                fs[FID_BACTERIALJEL].position = mouseWorldPos;
+                Debug.Log("Jel activated");
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.B)) {
+            if (Input.GetKey(KeyCode.LeftShift)) {
+                fs[FID_BLOODBAG].active = false;
+                Debug.Log("Bloodbag de-activated");
+            } else {
+                fs[FID_BLOODBAG].active = true;
+                fs[FID_BLOODBAG].position = mouseWorldPos;
+                Debug.Log("Bloodbag activated");
+            }
+        }
 
     }
     

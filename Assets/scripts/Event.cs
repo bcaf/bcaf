@@ -3,7 +3,7 @@ using UnityEngine;
 class Event : MonoBehaviour {
     bool active;
     protected Body body;
-	public Vector3 position;
+    public Vector3 position;
 
     public Event() {}
     
