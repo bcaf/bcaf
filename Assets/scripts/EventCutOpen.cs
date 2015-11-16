@@ -1,3 +1,5 @@
+using UnityEngine;
+
 class EventCutOpen : Event {
     const int STATE_NEEDS_BACTERIAL = 0;
     const int STATE_CUTTING = 1;
@@ -9,8 +11,8 @@ class EventCutOpen : Event {
     float bacJelAmountNeeded;
     
     public EventCutOpen(Body body_) {
-        Event(body_);
-        //body = body_;
+        //Event(body_);
+        body = body_;
         
         state = STATE_NEEDS_BACTERIAL;
         bacJelAmount = 0.0F;

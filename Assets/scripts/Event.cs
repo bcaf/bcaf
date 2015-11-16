@@ -3,11 +3,13 @@ using UnityEngine;
 class Event : MonoBehaviour {
     bool active;
     protected Body body;
+	public Vector3 position;
 
     public Event() {}
     
     public Event(Body body_) {
         body = body_;
+		position = new Vector3();
     }
     
     void Update() {

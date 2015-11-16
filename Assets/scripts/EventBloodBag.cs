@@ -1,3 +1,4 @@
+using UnityEngine;
 
 class EventBloodBag : Event {
     const int STATE_DETACHED = 0;
@@ -8,7 +9,8 @@ class EventBloodBag : Event {
     float bloodAmountLeftInBag;
     
     public EventBloodBag(Body body_) {
-        Event(body_);
+        //Event(body_);
+		body = body_;
         
         bloodAmountLeftInBag = START_BLOOD_AMOUNT;
         
