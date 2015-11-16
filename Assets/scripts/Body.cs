@@ -159,11 +159,19 @@ class Body : MonoBehaviour {
     }
     
     void OnGUI() {
-        Text bloodValueText;
-        bloodValueText = GameObject.Find ("value_blood").GetComponent<Text>();
-        //bloodValueText.text = "(STATE: " + this.state + ") Blood:" + bloodAmount.ToString();
-		bloodValueText.text = "Blood left: " + bloodAmount.ToString() + " ml";
+		GameObject.Find("label_blood").GetComponent<Text>().text = 
+			"Blood left:\n" + this.bloodAmount + " ml";
 
-		GameObject.Find ("value_statedebug").GetComponent<Text>().text = "STATE: " + this.state;
+		string label_cutopenevent_text = "(cutopenevent\nnot active)";
+
+		foreach (Event e in this.events) {
+			if (e.GetType() == typeof(EventCutOpen)) {
+				label_cutopenevent_text = "(cutopenevent\nACTIVE!)";
+			}
+		}
+
+		GameObject.Find("label_cutopenevent").GetComponent<Text>().text = label_cutopenevent_text;
+
+		GameObject.Find ("label_statedebug").GetComponent<Text>().text = "STATE: " + this.state;
     }
 }
