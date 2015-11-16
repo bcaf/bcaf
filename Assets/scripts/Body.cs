@@ -95,6 +95,12 @@ class Body : MonoBehaviour {
     /** Here we update things that happens before the game starts */
     void updateGameNotStarted() {
         bool fingerPressedStart = false; //change this with an actual call
+
+		//debug: press space to start
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			fingerPressedStart = true;
+		}
+
         if (fingerPressedStart) {
 //            int numActiveGloves = fs[GLOVE0].active + fs[GLOVE1].active +
 //                fs[GLOVE2].active + fs[GLOVE3].active;
@@ -112,6 +118,36 @@ class Body : MonoBehaviour {
         if (bloodAmount <= 0.0F) {
             changeStateToGameOver();
         }
+
+		//debug stuff, use keys to place things such as scalpels and bacterial jels
+		if (Input.GetKeyDown(KeyCode.S)) {
+			if (Input.GetKey(KeyCode.LeftShift)) {
+				fs[FID_SCALPEL].active = false;
+				Debug.Log("Scalpel de-activated");
+			} else {
+				fs[FID_SCALPEL].active = true;
+				Debug.Log("Scalpel activated");
+			}
+		}
+		if (Input.GetKeyDown(KeyCode.J)) {
+			if (Input.GetKey(KeyCode.LeftShift)) {
+				fs[FID_BACTERIALJEL].active = false;
+				Debug.Log("Jel de-activated");
+			} else {
+				fs[FID_BACTERIALJEL].active = true;
+				Debug.Log("Jel activated");
+			}
+		}
+		if (Input.GetKeyDown(KeyCode.B)) {
+			if (Input.GetKey(KeyCode.LeftShift)) {
+				fs[FID_BLOODBAG].active = false;
+				Debug.Log("Bloodbag de-activated");
+			} else {
+				fs[FID_BLOODBAG].active = true;
+				Debug.Log("Bloodbag activated");
+			}
+		}
+
     }
     
     void updateGameOver() {
@@ -125,6 +161,9 @@ class Body : MonoBehaviour {
     void OnGUI() {
         Text bloodValueText;
         bloodValueText = GameObject.Find ("value_blood").GetComponent<Text>();
-        bloodValueText.text = bloodAmount.ToString();
+        //bloodValueText.text = "(STATE: " + this.state + ") Blood:" + bloodAmount.ToString();
+		bloodValueText.text = "Blood left: " + bloodAmount.ToString() + " ml";
+
+		GameObject.Find ("value_statedebug").GetComponent<Text>().text = "STATE: " + this.state;
     }
 }
