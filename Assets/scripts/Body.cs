@@ -8,6 +8,11 @@ class Fiducial {
     public Vector3 position;
     public float rotation;
     public bool active;
+
+	public Vector2 get2dPosition() {
+		return new Vector2(position.x, position.z);
+    }
+
     public Fiducial(int id_) {
         id = id_;
         position = new Vector3();
@@ -28,7 +33,7 @@ class Body : MonoBehaviour {
     public const int FID_GLOVE1 = 1;
     public const int FID_GLOVE2 = 2;
     public const int FID_GLOVE3 = 3;
-    public const int FID_BACTERIALJEL = 4;
+    public const int FID_BACTERIALGEL = 4;
     public const int FID_SCALPEL = 5;
     public const int FID_BLOODBAG = 6;
     public const float START_BLOOD_AMOUNT = 5000.0F;
@@ -38,7 +43,7 @@ class Body : MonoBehaviour {
     public Fiducial[] fs;
     public List<Fiducial> updatedFiducials;
     string state; //"notstarted", "ingame" or "gameover"
-    List<Event> events;
+    public List<Event> events;
     
     public int numPlayers;
     public float bloodAmount;
@@ -63,7 +68,7 @@ class Body : MonoBehaviour {
     }
     
     void changeStateToIngame() {
-        events.Add(new EventCutOpen(this)); //Add initial event
+        events.Add(new EventCutOpen(this, new Vector3(-75.0F, 58.0F, -38.0F))); //Add initial event
         this.state = "ingame";
     }
     
@@ -75,17 +80,19 @@ class Body : MonoBehaviour {
     }
     
     void Update() {
-//        foreach (Fiducial f in fs) {
-//            f.update();
-//        }
-		for (int i = 0; i < NUM_FIDUCIALS; i++) {
-			fs [i].update ();
+		for (int i = 0; i < NUM_FIDUCIALS; i++) { fs[i].update(); }
+		//foreach (Fiducial f in fs)       { f.update(); }
+		foreach (Event e in this.events) {
+			//Debug.Log("event type: " + e.GetType().ToString());
+
+			//TODO: there has to be a better way of doing this...
+			if (e is EventCutOpen) {
+				((EventCutOpen)e).update();
+			}
 		}
         
-        if (this.state == "notstarted") {
-            updateGameNotStarted();
-        } else if (this.state == "ingame") {
-            updateIngame();
+        if (this.state == "notstarted") { updateGameNotStarted();
+        } else if (this.state == "ingame") { updateIngame();
         } else if (this.state == "ingame") {
         } else if (this.state == "gameover") {
         }
@@ -146,12 +153,14 @@ class Body : MonoBehaviour {
     void updateIngame() {
 		Vector3 mouseWorldPos = getMouseToWorldPosition();
 		//Debug.Log("mouseWorldPos: " + mouseWorldPos.ToString());
+
+
         
         if (bloodAmount <= 0.0F) {
             changeStateToGameOver();
         }
 
-		//debug stuff, press keys to add things such as scalpels and bacterial jels to the position of the mouse.
+		//debug stuff, press keys to add things such as scalpels and bacterial gels to the position of the mouse.
 		if (Input.GetKeyDown(KeyCode.S)) {
 			if (Input.GetKey(KeyCode.LeftShift)) {
 				fs[FID_SCALPEL].active = false;
@@ -164,15 +173,15 @@ class Body : MonoBehaviour {
 				updateDebugObject("scalpel_debug", mouseWorldPos, true);
 			}
 		}
-		if (Input.GetKeyDown(KeyCode.J)) {
+		if (Input.GetKeyDown(KeyCode.G)) {
 			if (Input.GetKey(KeyCode.LeftShift)) {
-				fs[FID_BACTERIALJEL].active = false;
-				updateDebugObject("bacterialjel_debug", mouseWorldPos, false);
-				Debug.Log("Jel de-activated");
+				fs[FID_BACTERIALGEL].active = false;
+				updateDebugObject("bacterialgel_debug", mouseWorldPos, false);
+				Debug.Log("Gel de-activated");
 			} else {
-				fs[FID_BACTERIALJEL].active = true;
-				Debug.Log("Jel activated");
-				updateDebugObject("bacterialjel_debug", mouseWorldPos, true);
+				fs[FID_BACTERIALGEL].active = true;
+				Debug.Log("Gel activated");
+				updateDebugObject("bacterialgel_debug", mouseWorldPos, true);
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.B)) {
@@ -211,4 +220,8 @@ class Body : MonoBehaviour {
 
 		GameObject.Find ("label_statedebug").GetComponent<Text>().text = "STATE: " + this.state;
     }
+
+	public bool chance(float value) { //helper function
+		return Random.Range(0.0F, 1.0F) < value;
+	}
 }

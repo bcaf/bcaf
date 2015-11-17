@@ -12,8 +12,13 @@ class Event : MonoBehaviour {
 		position = new Vector3();
     }
     
-    void Update() {
+    public virtual void update() {
+		Debug.Log("We're in Event.Update()");
         //body.bloodAmount -= 1.0F;
+    }
+	
+	public Vector2 get2dPosition() {
+		return new Vector2(position.x, position.z);
     }
     
     /*this is called whenever gameOver happens.
