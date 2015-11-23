@@ -71,7 +71,7 @@ class EventCutOpen : Event {
 					}
 				}
 				if (cutPoints.Count > 0) {
-					Debug.Log("dist to last cutPoint:" + 
+					Debug.Log("dist to last cutPoint:" +
 				          (cutPoints[cutPoints.Count-1] - midCutPosition).magnitude.ToString());
 				}
                 Debug.Log("numCloseCutPoints: " + numCloseCutPoints.ToString());
@@ -81,11 +81,14 @@ class EventCutOpen : Event {
 
 					if (body.chance(0.7F)) {
 						if (body.chance(0.5F)) {
+                            Debug.Log("Changed event to EventDrainPuss");
 							//this.body.events.Add(new EventDrainPuss());
 						} else {
+                            Debug.Log("Changed event to EventDrainBlood");
 							//this.body.events.Add(new EventDrainBlood());
 						}
 					} else {
+                        Debug.Log("Changed event to EventApplyScrewsToBones");
 						//this.body.events.Add(new EventApplyScrewsToBones());
 					}
                 }
@@ -111,7 +114,7 @@ class EventCutOpen : Event {
 
 		//Debug.Log("BacGelAmount ratio: " + ratio.ToString());
 
-		GameObject.Find("label_cutopenevent").GetComponent<Text>().text = 
+		GameObject.Find("label_cutopenevent").GetComponent<Text>().text =
 			"Bacterial Gel: " + (100.0F*ratio).ToString() + "%";
     }
     
