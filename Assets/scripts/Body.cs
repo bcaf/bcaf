@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-class Fiducial {
+/*class Fiducial {
     public int id;
     public Vector3 position;
     public float rotation;
@@ -23,7 +23,7 @@ class Fiducial {
     public void update() {
         //update position, rotation, active of id=id
     }
-}
+}*/
 
 class Body : MonoBehaviour {
     private const int NUM_FIDUCIALS = 50;
@@ -79,8 +79,8 @@ class Body : MonoBehaviour {
     }
     
     void Update() {
-        Communication comm = victim.GetComponent<Communication>();
-        fids = comm.updateFiducials();
+        Communication comm = (Communication) GameObject.Find("Main Camera").GetComponent<Communication>();
+        //fids = comm.updateFiducials();
 		//for (int i = 0; i < NUM_FIDUCIALS; i++) { fs[i].update(); }
 		//foreach (Fiducial f in fs)       { f.update(); }
 		foreach (Event e in this.events) {

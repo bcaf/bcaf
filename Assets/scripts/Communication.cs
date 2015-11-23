@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Net.Sockets;
 
-class Fiducial {
+public class Fiducial {
     public int id;
     public Vector3 position;
     public float rotation;
@@ -60,8 +61,8 @@ public class Communication : MonoBehaviour {
     // Use this for initialization
     void Start () {
         mirrors = new GameObject[10];
-        fs = new Fiducial[NUM_FIDUCIALS];
-        Dictionary<int, Fiducial> fd = new Dictionary<int, Fiducial>();
+        //fs = new Fiducial[NUM_FIDUCIALS];
+        fd = new Dictionary<int, Fiducial>();
 
         try{
         clientNew = new TcpClient("127.0.0.1",1111);
@@ -144,7 +145,7 @@ public class Communication : MonoBehaviour {
             if (fd.ContainsKey(ID)) {
                 fd[ID].active = false;
             } else {
-                Debug.Log("Tried to delete fiducial " + ID.toString()
+                Debug.Log("Tried to delete fiducial " + ID
                     + " but it's not in fd!");
             }
                 
