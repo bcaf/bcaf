@@ -1,3 +1,4 @@
+using UnityEngine;
 
 class EventDrainBlood : Event {
     const int STATE_UNDRAINED = 0;
@@ -5,13 +6,14 @@ class EventDrainBlood : Event {
     
     int state;
     
-    float bloodAmount = 20.0F + 10.0F*body.numPlayers;
+    float bloodAmount;
     const float bloodRemovedPerSecond = 2.0F;
     
     public EventDrainBlood(Body body_) {
         //Event(body_);
 		body = body_;
         state = STATE_UNDRAINED;
+        bloodAmount = 20.0F + 10.0F*body.numPlayers;
     }
     
     
@@ -25,7 +27,7 @@ class EventDrainBlood : Event {
                     Debug.Log("Syringe is placed, but too far away, at distance " +
                             distanceToEvent);
                 } else {
-                    this.bloodAmount -= this.bloodRemovedPerSecond * Time.deltaTime;
+                    this.bloodAmount -= bloodRemovedPerSecond * Time.deltaTime;
                 }
             }
         }
