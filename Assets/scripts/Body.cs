@@ -39,10 +39,7 @@ class Body : MonoBehaviour {
     public const int FID_SYRINGE = 7;
     public const float START_BLOOD_AMOUNT = 5000.0F;
     
-    
-    
     public Fiducial[] fs;
-    public List<Fiducial> updatedFiducials;
     string state; //"notstarted", "ingame" or "gameover"
     public List<Event> events;
     
@@ -50,11 +47,12 @@ class Body : MonoBehaviour {
     public float bloodAmount;
     
     void Start() {
-        fs = new Fiducial[NUM_FIDUCIALS];
-        updatedFiducials = new List<Fiducial>();
-        for (int i = 0; i < NUM_FIDUCIALS; i++) {
+        //fs = new Fiducial[NUM_FIDUCIALS];
+        /*for (int i = 0; i < NUM_FIDUCIALS; i++) {
             fs[i] = new Fiducial(i);
         }
+        */
+        
         events = new List<Event>();
         
         numPlayers = 0;
@@ -81,7 +79,9 @@ class Body : MonoBehaviour {
     }
     
     void Update() {
-		for (int i = 0; i < NUM_FIDUCIALS; i++) { fs[i].update(); }
+        Communication comm = victim.GetComponent<Communication>();
+        fids = comm.updateFiducials();
+		//for (int i = 0; i < NUM_FIDUCIALS; i++) { fs[i].update(); }
 		//foreach (Fiducial f in fs)       { f.update(); }
 		foreach (Event e in this.events) {
 			//Debug.Log("event type: " + e.GetType().ToString());
