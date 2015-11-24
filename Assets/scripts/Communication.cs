@@ -21,6 +21,11 @@ public class Fiducial {
         rotation = rotation_;
         active = active_;
     }
+
+    public void setPosition(Vector3 position_)
+    {
+        position = position_;
+    }
     
     public void update() {
         //update position, rotation, active of id=id
@@ -105,8 +110,10 @@ public class Communication : MonoBehaviour {
             float Angle = ((float)Rad*3.1415f/180.0f)/100.0f;
             
             Vector3 position = new Vector3(X, 0.0F, Y);
-            fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
-
+            if (!fd.ContainsKey(Tag))
+                fd.Add(Tag, new Fiducial(Tag, position, Rad, true));
+            else
+                fd[Tag].setPosition(position);
             Debug.Log("Added fiducal " + Tag + " at (" + X + "," + Y + ")");
             
             /*X = Xo + (X / 1920f) * Xdist;
@@ -133,7 +140,12 @@ public class Communication : MonoBehaviour {
             float Angle = (Rad*180f/3.1415f);
             
             Vector3 position = new Vector3(X, 0.0F, Y);
-            fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
+
+            //fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
+            if (!fd.ContainsKey(Tag))
+                fd.Add(Tag, new Fiducial(Tag, position, Rad, true));
+            else
+                fd[Tag].setPosition(position);
 
             Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
             
@@ -160,7 +172,7 @@ public class Communication : MonoBehaviour {
                     + " but it's not in fd!");
             }
 
-            Debug.Log("Removed fiducal " + Tag + " at (" + X + "," + Y + ")");
+            Debug.Log("Removed fiducal " + Tag);
             
             /*Vector3 position = new Vector3(X, 0.0F, Y);
             
