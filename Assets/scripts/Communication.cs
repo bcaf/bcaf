@@ -106,6 +106,8 @@ public class Communication : MonoBehaviour {
             
             Vector3 position = new Vector3(X, 0.0F, Y);
             fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
+
+            Debug.Log("Added fiducal " + Tag + " at (" + X + "," + Y + ")");
             
             /*X = Xo + (X / 1920f) * Xdist;
             Y = Yo - (Y / 1080f) * Ydist;
@@ -132,6 +134,8 @@ public class Communication : MonoBehaviour {
             
             Vector3 position = new Vector3(X, 0.0F, Y);
             fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
+
+            Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
             
             /*X = Xo+(X/1920f)*Xdist;
             Y = Yo-(Y/1080f)*Ydist;
@@ -155,7 +159,8 @@ public class Communication : MonoBehaviour {
                 Debug.Log("Tried to delete fiducial " + Tag
                     + " but it's not in fd!");
             }
-                
+
+            Debug.Log("Removed fiducal " + Tag + " at (" + X + "," + Y + ")");
             
             /*Vector3 position = new Vector3(X, 0.0F, Y);
             
