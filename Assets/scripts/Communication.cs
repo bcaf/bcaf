@@ -87,18 +87,25 @@ public class Communication : MonoBehaviour {
         }
     }
 
+    void OnApplicationQuit()
+    {
+        clientNew.Close();
+        clientUpdate.Close();
+        clientDelete.Close();
+    }
+
     // Update is called once per frame by Unity
     void Update () {
         if (clientNew.Available > 0) {
-            int ID = Convert.ToInt32 (srNew.ReadLine ());
-            int Tag = Convert.ToInt32 (srNew.ReadLine ());
+            int ID = Convert.ToInt32 (srNew.ReadLine ()); // ID is not bound to the fiducal.
+            int Tag = Convert.ToInt32 (srNew.ReadLine ()); // Tag is a 'long' bound to the fiducal
             float X = Convert.ToSingle (srNew.ReadLine ());
             float Y = Convert.ToSingle (srNew.ReadLine ());
             int Rad = Convert.ToInt32(srNew.ReadLine());
             float Angle = ((float)Rad*3.1415f/180.0f)/100.0f;
             
             Vector3 position = new Vector3(X, 0.0F, Y);
-            fd.Add(ID, new Fiducial(ID, position,Rad, true));
+            fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
             
             /*X = Xo + (X / 1920f) * Xdist;
             Y = Yo - (Y / 1080f) * Ydist;
@@ -124,7 +131,7 @@ public class Communication : MonoBehaviour {
             float Angle = (Rad*180f/3.1415f);
             
             Vector3 position = new Vector3(X, 0.0F, Y);
-            fd.Add(ID, new Fiducial(ID, position,Rad, true));
+            fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
             
             /*X = Xo+(X/1920f)*Xdist;
             Y = Yo-(Y/1080f)*Ydist;
@@ -141,11 +148,11 @@ public class Communication : MonoBehaviour {
             swUpdate.WriteLine("done2");*/
         }
         if (clientDelete.Available > 0) {
-            int ID = Convert.ToInt32(srDelete.ReadLine());
-            if (fd.ContainsKey(ID)) {
-                fd[ID].active = false;
+            int Tag = Convert.ToInt32(srDelete.ReadLine());
+            if (fd.ContainsKey(Tag)) {
+                fd[Tag].active = false;
             } else {
-                Debug.Log("Tried to delete fiducial " + ID
+                Debug.Log("Tried to delete fiducial " + Tag
                     + " but it's not in fd!");
             }
                 
