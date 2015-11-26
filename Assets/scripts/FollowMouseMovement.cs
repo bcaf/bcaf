@@ -16,14 +16,13 @@ public class FollowMouseMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		float dist = transform.position.z - Camera.main.transform.position.z;
 		Vector3 pos = Input.mousePosition;
-		pos.z = transform.position.z - Camera.main.transform.position.z;
-		transform.position = Camera.main.ScreenToWorldPoint(pos);
+		pos.z = dist;
+		pos = Camera.main.ScreenToWorldPoint(pos);
+		pos.y = transform.position.y;
+		transform.position = pos;
 		print (transform.position);
-
-		//Vector3 mouselocation = Camera.main.camera.ScreenToWorldPoint(Input.mousePosition);
-		//transform.position = mouselocation;
-		//print("MouseX: " + X + " MouseY: " + Y);
 		
 	}
 }
