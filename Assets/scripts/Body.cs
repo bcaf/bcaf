@@ -2,8 +2,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
+using System.IO;
+using System.Net.Sockets;
 
-/*class Fiducial {
+class Fiducial {
     public int id;
     public Vector3 position;
     public float rotation;
@@ -19,11 +22,24 @@ using System.Collections.Generic;
         rotation = 0.0F;
         active = false;
     }
+
+    public Fiducial(int id_, Vector3 position_, float rotation_, bool active_)
+    {
+        id = id_;
+        position = position_;
+        rotation = rotation_;
+        active = active_;
+    }
+
+    public void setPosition(Vector3 position_)
+    {
+        position = position_;
+    }
     
     public void update() {
         //update position, rotation, active of id=id
     }
-}*/
+}
 
 class Body : MonoBehaviour {
     private const int NUM_FIDUCIALS = 50;
@@ -45,6 +61,21 @@ class Body : MonoBehaviour {
     
     public int numPlayers;
     public float bloodAmount;
+
+    public StreamReader srNew;
+    public StreamWriter swNew;
+    public Stream sNew;
+    public StreamReader srUpdate;
+    public StreamWriter swUpdate;
+    public Stream sUpdate;
+    public StreamReader srDelete;
+    public StreamWriter swDelete;
+    public Stream sDelete;
+    public TcpClient clientNew;
+    public TcpClient clientUpdate;
+    public TcpClient clientDelete;
+
+    public Dictionary<int, Fiducial> fd;
     
     void Start() {
         //fs = new Fiducial[NUM_FIDUCIALS];
@@ -60,6 +91,28 @@ class Body : MonoBehaviour {
         
         
         changeStateToGameNotStarted();
+
+        fd = new Dictionary<int, Fiducial>();
+
+        try{
+        clientNew = new TcpClient("127.0.0.1",1111);
+        clientUpdate = new TcpClient("127.0.0.1",1112);
+        clientDelete = new TcpClient("127.0.0.1",1113);
+
+            sNew = clientNew.GetStream();
+            srNew = new StreamReader(sNew);
+            swNew = new StreamWriter(sNew);
+            swNew.AutoFlush = true; // enable automatic flushing
+            sUpdate = clientUpdate.GetStream();
+            srUpdate = new StreamReader(sUpdate);
+            swUpdate = new StreamWriter(sUpdate);
+            swUpdate.AutoFlush = true; // enable automatic flushing
+            sDelete = clientDelete.GetStream();
+            srDelete = new StreamReader(sDelete);
+            swDelete = new StreamWriter(sDelete);
+            swDelete.AutoFlush = true; // enable automatic flushing
+
+        } finally {}
     }
     
     void changeStateToGameNotStarted() {
@@ -96,6 +149,58 @@ class Body : MonoBehaviour {
         } else if (this.state == "ingame") { updateIngame();
         } else if (this.state == "ingame") {
         } else if (this.state == "gameover") {
+        }
+
+        // Comm paste
+        if (clientNew.Available > 0)
+        {
+            int ID = Convert.ToInt32(srNew.ReadLine()); // ID is not bound to the fiducal.
+            int Tag = Convert.ToInt32(srNew.ReadLine()); // Tag is a 'long' bound to the fiducal
+            float X = Convert.ToSingle(srNew.ReadLine());
+            float Y = Convert.ToSingle(srNew.ReadLine());
+            int Rad = Convert.ToInt32(srNew.ReadLine());
+            float Angle = ((float)Rad * 3.1415f / 180.0f) / 100.0f;
+
+            Vector3 position = new Vector3(X, 0.0F, Y);
+            if (!fd.ContainsKey(Tag))
+                fd.Add(Tag, new Fiducial(Tag, position, Rad, true));
+            else
+                fd[Tag].setPosition(position);
+            Debug.Log("Added fiducal " + Tag + " at (" + X + "," + Y + ")");
+        }
+        if (clientUpdate.Available > 0)
+        {
+            int ID = Convert.ToInt32(srUpdate.ReadLine());
+            int Tag = Convert.ToInt32(srUpdate.ReadLine());
+            float X = Convert.ToSingle(srUpdate.ReadLine());
+            float Y = Convert.ToSingle(srUpdate.ReadLine());
+            float Rad = Convert.ToSingle(srUpdate.ReadLine()) / 100f;
+            float Angle = (Rad * 180f / 3.1415f);
+
+            Vector3 position = new Vector3(X, 0.0F, Y);
+
+            //fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
+            if (!fd.ContainsKey(Tag))
+                fd.Add(Tag, new Fiducial(Tag, position, Rad, true));
+            else
+                fd[Tag].setPosition(position);
+
+            Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
+        }
+        if (clientDelete.Available > 0)
+        {
+            int Tag = Convert.ToInt32(srDelete.ReadLine());
+            if (fd.ContainsKey(Tag))
+            {
+                fd[Tag].active = false;
+            }
+            else
+            {
+                Debug.Log("Tried to delete fiducial " + Tag
+                    + " but it's not in fd!");
+            }
+
+            Debug.Log("Removed fiducal " + Tag);
         }
     }
     
@@ -223,6 +328,21 @@ class Body : MonoBehaviour {
     }
 
 	public bool chance(float value) { //helper function
-		return Random.Range(0.0F, 1.0F) < value;
+		return UnityEngine.Random.Range(0.0F, 1.0F) < value;
 	}
+
+    Fiducial getFiducal(int ID_)
+    {
+        // Check if fiducal is in dictionary
+        if (fd.ContainsKey(ID_))
+        {
+            return fd[ID_];
+        }
+        // Else return a dummy object
+        else
+        {
+            Fiducial dummy = new Fiducial(ID_);
+            return dummy;
+        }
+    }
 }
