@@ -37,7 +37,9 @@ class EventCutOpen : Event {
 		//Debug.Log("In EventCutOpen.update(), state = " + state.ToString());
 
         if (state == STATE_NEEDS_BACTERIAL) {
-            Fiducial bacGelFid = body.fs[Body.FID_BACTERIALGEL];
+            //Fiducial bacGelFid = body.getFiducial(Body.FID_BACTERIALGEL);
+            Fiducial bacGelFid = body.getFiducial(Body.FID_BACTERIALGEL);
+
             if (bacGelFid.active) {
                 bacGelAmount += BACJEL_ADDED_PER_SECOND * Time.deltaTime;
                 
@@ -52,7 +54,8 @@ class EventCutOpen : Event {
 				//Debug.Log("bacJelFid.active is false");
 			}
         } else if (state == STATE_CUTTING) {
-            Fiducial scalpel = body.fs[Body.FID_SCALPEL];
+            //Fiducial scalpel = body.getFiducial(Body.FID_SCALPEL);
+            Fiducial scalpel = body.getFiducial(Body.FID_SCALPEL);
             
             if (scalpel.active) {
 				if (cutPoints.Count == 0 || !cutPoints[cutPoints.Count - 1].Equals(scalpel.get2dPosition())) {

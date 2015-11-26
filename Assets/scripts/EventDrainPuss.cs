@@ -20,7 +20,7 @@ class EventDrainPuss : Event {
     //Unity's Update function
     void Update() {
         if (state == STATE_UNDRAINED) {
-            Fiducial syringe = body.fs[Body.FID_SYRINGE];
+            Fiducial syringe = body.getFiducial(Body.FID_SYRINGE);
             if (syringe.active) {
                 float distanceToEvent = (syringe.position - this.position).magnitude;
                 if (distanceToEvent > 0.5F) {
