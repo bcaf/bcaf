@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 
-class Fiducial {
+/*class Fiducial {
     public int id;
     public Vector3 position;
     public float rotation;
@@ -39,7 +39,7 @@ class Fiducial {
     public void update() {
         //update position, rotation, active of id=id
     }
-}
+}*/
 
 class Body : MonoBehaviour {
     private const int NUM_FIDUCIALS = 50;
@@ -331,7 +331,7 @@ class Body : MonoBehaviour {
 		return UnityEngine.Random.Range(0.0F, 1.0F) < value;
 	}
 
-    Fiducial getFiducial(int ID_)
+    public Fiducial getFiducial(int ID_)
     {
         // Check if fiducal is in dictionary
         if (fd.ContainsKey(ID_))
