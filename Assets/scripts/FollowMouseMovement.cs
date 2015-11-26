@@ -19,7 +19,7 @@ public class FollowMouseMovement : MonoBehaviour {
 		Vector3 pos = Input.mousePosition;
 		pos.z = transform.position.z - Camera.main.transform.position.z;
 		transform.position = Camera.main.ScreenToWorldPoint(pos);
-		print (transform.position);
+		//print (transform.position);
 
 		//Vector3 mouselocation = Camera.main.camera.ScreenToWorldPoint(Input.mousePosition);
 		//transform.position = mouselocation;
