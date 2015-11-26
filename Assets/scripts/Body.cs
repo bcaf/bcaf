@@ -331,7 +331,7 @@ class Body : MonoBehaviour {
 		return UnityEngine.Random.Range(0.0F, 1.0F) < value;
 	}
 
-    Fiducial getFiducal(int ID_)
+    Fiducial getFiducial(int ID_)
     {
         // Check if fiducal is in dictionary
         if (fd.ContainsKey(ID_))
