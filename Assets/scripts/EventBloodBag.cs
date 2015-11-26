@@ -20,7 +20,7 @@ class EventBloodBag : Event {
     
     //Unity's Update function
     void Update() {
-        Fiducial bloodBag = body.fs[Body.FID_BLOODBAG];
+        Fiducial bloodBag = body.getFiducial(Body.FID_BLOODBAG);
         if (bloodBag.active) {
             float distanceToEvent = (bloodBag.position - this.position).magnitude;
             if (distanceToEvent > 0.5F) {

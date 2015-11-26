@@ -38,7 +38,7 @@ class EventSubClass : Event {
     
     //Unity's Update function
     void Update() {
-        //Fiducial bacJelFid = body.fs[Body.FID_BACTERIALJEL];
+        //Fiducial bacJelFid = body.getFiducial(Body.FID_BACTERIALJEL);
     }
     
     //this is called whenever gameOver happens.  Cleanly stop current animations and things like that.

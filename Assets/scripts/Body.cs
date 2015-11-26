@@ -49,7 +49,7 @@ class Body : MonoBehaviour {
     void Start() {
         //fs = new Fiducial[NUM_FIDUCIALS];
         /*for (int i = 0; i < NUM_FIDUCIALS; i++) {
-            fs[i] = new Fiducial(i);
+            getFiducial(i) = new Fiducial(i);
         }
         */
         
@@ -81,7 +81,7 @@ class Body : MonoBehaviour {
     void Update() {
         Communication comm = (Communication) GameObject.Find("Main Camera").GetComponent<Communication>();
         //fids = comm.updateFiducials();
-		//for (int i = 0; i < NUM_FIDUCIALS; i++) { fs[i].update(); }
+		//for (int i = 0; i < NUM_FIDUCIALS; i++) { getFiducial(i).update(); }
 		//foreach (Fiducial f in fs)       { f.update(); }
 		foreach (Event e in this.events) {
 			//Debug.Log("event type: " + e.GetType().ToString());
@@ -110,13 +110,13 @@ class Body : MonoBehaviour {
 		}
 
         if (fingerPressedStart) {
-//            int numActiveGloves = fs[GLOVE0].active + fs[GLOVE1].active +
-//                fs[GLOVE2].active + fs[GLOVE3].active;
+//            int numActiveGloves = getFiducial(GLOVE0).active + getFiducial(GLOVE1).active +
+//                getFiducial(GLOVE2).active + getFiducial(GLOVE3).active;
 			int numActiveGloves = 0;
-			numActiveGloves += fs[FID_GLOVE0].active ? 1 : 0;
-            numActiveGloves += fs[FID_GLOVE1].active ? 1 : 0;
-            numActiveGloves += fs[FID_GLOVE2].active ? 1 : 0;
-            numActiveGloves += fs[FID_GLOVE3].active ? 1 : 0;
+			numActiveGloves += getFiducial(FID_GLOVE0).active ? 1 : 0;
+            numActiveGloves += getFiducial(FID_GLOVE1).active ? 1 : 0;
+            numActiveGloves += getFiducial(FID_GLOVE2).active ? 1 : 0;
+            numActiveGloves += getFiducial(FID_GLOVE3).active ? 1 : 0;
             numPlayers = NUM_GLOVES - numActiveGloves;
             changeStateToIngame();
         }
@@ -164,33 +164,33 @@ class Body : MonoBehaviour {
 		//debug stuff, press keys to add things such as scalpels and bacterial gels to the position of the mouse.
 		if (Input.GetKeyDown(KeyCode.S)) {
 			if (Input.GetKey(KeyCode.LeftShift)) {
-				fs[FID_SCALPEL].active = false;
+				getFiducial(FID_SCALPEL).active = false;
 				updateDebugObject("scalpel_debug", mouseWorldPos, false);
 				Debug.Log("Scalpel de-activated");
 			} else {
-				fs[FID_SCALPEL].active = true;
-				fs[FID_SCALPEL].position = mouseWorldPos;
+				getFiducial(FID_SCALPEL).active = true;
+				getFiducial(FID_SCALPEL).position = mouseWorldPos;
 				Debug.Log("Scalpel activated");
 				updateDebugObject("scalpel_debug", mouseWorldPos, true);
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.G)) {
 			if (Input.GetKey(KeyCode.LeftShift)) {
-				fs[FID_BACTERIALGEL].active = false;
+				getFiducial(FID_BACTERIALGEL).active = false;
 				updateDebugObject("bacterialgel_debug", mouseWorldPos, false);
 				Debug.Log("Gel de-activated");
 			} else {
-				fs[FID_BACTERIALGEL].active = true;
+				getFiducial(FID_BACTERIALGEL).active = true;
 				Debug.Log("Gel activated");
 				updateDebugObject("bacterialgel_debug", mouseWorldPos, true);
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.B)) {
 			if (Input.GetKey(KeyCode.LeftShift)) {
-				fs[FID_BLOODBAG].active = false;
+				getFiducial(FID_BLOODBAG).active = false;
 				Debug.Log("Bloodbag de-activated");
 			} else {
-				fs[FID_BLOODBAG].active = true;
+				getFiducial(FID_BLOODBAG).active = true;
 				Debug.Log("Bloodbag activated");
 			}
 		}
