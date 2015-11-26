@@ -21,3 +21,6 @@
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
+
+# Include our middleware
+!Middleware/SendInput.exe

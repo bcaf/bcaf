@@ -37,7 +37,9 @@ class EventCutOpen : Event {
 		//Debug.Log("In EventCutOpen.update(), state = " + state.ToString());
 
         if (state == STATE_NEEDS_BACTERIAL) {
-            Fiducial bacGelFid = body.fs[Body.FID_BACTERIALGEL];
+            //Fiducial bacGelFid = body.getFiducial(Body.FID_BACTERIALGEL);
+            Fiducial bacGelFid = body.getFiducial(Body.FID_BACTERIALGEL);
+
             if (bacGelFid.active) {
                 bacGelAmount += BACJEL_ADDED_PER_SECOND * Time.deltaTime;
                 
@@ -52,7 +54,8 @@ class EventCutOpen : Event {
 				//Debug.Log("bacJelFid.active is false");
 			}
         } else if (state == STATE_CUTTING) {
-            Fiducial scalpel = body.fs[Body.FID_SCALPEL];
+            //Fiducial scalpel = body.getFiducial(Body.FID_SCALPEL);
+            Fiducial scalpel = body.getFiducial(Body.FID_SCALPEL);
             
             if (scalpel.active) {
 				if (cutPoints.Count == 0 || !cutPoints[cutPoints.Count - 1].Equals(scalpel.get2dPosition())) {
@@ -71,7 +74,7 @@ class EventCutOpen : Event {
 					}
 				}
 				if (cutPoints.Count > 0) {
-					Debug.Log("dist to last cutPoint:" + 
+					Debug.Log("dist to last cutPoint:" +
 				          (cutPoints[cutPoints.Count-1] - midCutPosition).magnitude.ToString());
 				}
                 Debug.Log("numCloseCutPoints: " + numCloseCutPoints.ToString());
@@ -81,11 +84,14 @@ class EventCutOpen : Event {
 
 					if (body.chance(0.7F)) {
 						if (body.chance(0.5F)) {
+                            Debug.Log("Changed event to EventDrainPuss");
 							//this.body.events.Add(new EventDrainPuss());
 						} else {
+                            Debug.Log("Changed event to EventDrainBlood");
 							//this.body.events.Add(new EventDrainBlood());
 						}
 					} else {
+                        Debug.Log("Changed event to EventApplyScrewsToBones");
 						//this.body.events.Add(new EventApplyScrewsToBones());
 					}
                 }
@@ -111,7 +117,7 @@ class EventCutOpen : Event {
 
 		//Debug.Log("BacGelAmount ratio: " + ratio.ToString());
 
-		GameObject.Find("label_cutopenevent").GetComponent<Text>().text = 
+		GameObject.Find("label_cutopenevent").GetComponent<Text>().text =
 			"Bacterial Gel: " + (100.0F*ratio).ToString() + "%";
     }
     
