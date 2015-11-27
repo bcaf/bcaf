@@ -94,10 +94,11 @@ class Body : MonoBehaviour {
 
         fd = new Dictionary<int, Fiducial>();
 
-        try{
-        clientNew = new TcpClient("127.0.0.1",1111);
-        clientUpdate = new TcpClient("127.0.0.1",1112);
-        clientDelete = new TcpClient("127.0.0.1",1113);
+        try
+        {
+            clientNew = new TcpClient("127.0.0.1", 1111);
+            clientUpdate = new TcpClient("127.0.0.1", 1112);
+            clientDelete = new TcpClient("127.0.0.1", 1113);
 
             sNew = clientNew.GetStream();
             srNew = new StreamReader(sNew);
@@ -112,7 +113,11 @@ class Body : MonoBehaviour {
             swDelete = new StreamWriter(sDelete);
             swDelete.AutoFlush = true; // enable automatic flushing
 
-        } finally {}
+        }
+        catch (SocketException e) {
+            Debug.Log("SocketException!");
+        }
+        finally { }
     }
     
     void changeStateToGameNotStarted() {
@@ -132,7 +137,7 @@ class Body : MonoBehaviour {
     }
     
     void Update() {
-        Communication comm = (Communication) GameObject.Find("Main Camera").GetComponent<Communication>();
+        //Communication comm = (Communication) GameObject.Find("Main Camera").GetComponent<Communication>();
         //fids = comm.updateFiducials();
 		//for (int i = 0; i < NUM_FIDUCIALS; i++) { getFiducial(i).update(); }
 		//foreach (Fiducial f in fs)       { f.update(); }
@@ -152,8 +157,7 @@ class Body : MonoBehaviour {
         }
 
         // Comm paste
-        if (clientNew.Available > 0)
-        {
+        if (clientNew != null && clientNew.Available > 0) {
             int ID = Convert.ToInt32(srNew.ReadLine()); // ID is not bound to the fiducal.
             int Tag = Convert.ToInt32(srNew.ReadLine()); // Tag is a 'long' bound to the fiducal
             float X = Convert.ToSingle(srNew.ReadLine());
@@ -161,14 +165,16 @@ class Body : MonoBehaviour {
             int Rad = Convert.ToInt32(srNew.ReadLine());
             float Angle = ((float)Rad * 3.1415f / 180.0f) / 100.0f;
 
-            Vector3 position = new Vector3(X, 0.0F, Y);
+            Vector3 position = getFidToWorldPosition(new Vector3(X, 0.0F, Y));
             if (!fd.ContainsKey(Tag))
                 fd.Add(Tag, new Fiducial(Tag, position, Rad, true));
             else
                 fd[Tag].setPosition(position);
-            Debug.Log("Added fiducal " + Tag + " at (" + X + "," + Y + ")");
+            Debug.Log("Added fiducal " + Tag + " at (" + X + "," + Y + "), UnityPos: ("
+                + position.x + ", " + position.y + ", " + position.z + ")");
         }
-        if (clientUpdate.Available > 0)
+
+        if (clientUpdate != null && clientUpdate.Available > 0)
         {
             int ID = Convert.ToInt32(srUpdate.ReadLine());
             int Tag = Convert.ToInt32(srUpdate.ReadLine());
@@ -177,7 +183,7 @@ class Body : MonoBehaviour {
             float Rad = Convert.ToSingle(srUpdate.ReadLine()) / 100f;
             float Angle = (Rad * 180f / 3.1415f);
 
-            Vector3 position = new Vector3(X, 0.0F, Y);
+            Vector3 position = getFidToWorldPosition(new Vector3(X, 0.0F, Y));
 
             //fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
             if (!fd.ContainsKey(Tag))
@@ -187,7 +193,7 @@ class Body : MonoBehaviour {
 
             Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
         }
-        if (clientDelete.Available > 0)
+        if (clientDelete != null && clientDelete.Available > 0)
         {
             int Tag = Convert.ToInt32(srDelete.ReadLine());
             if (fd.ContainsKey(Tag))
@@ -243,6 +249,20 @@ class Body : MonoBehaviour {
 		return new Vector3(rx, 15.0F, ry);
 	}
 
+    Vector3 getFidToWorldPosition(Vector3 fidPosition)
+    {
+        float tableWidth = 225.0F;
+        float tableHeight = 400.0F;
+
+        float rx = 2.0F * (fidPosition.x / Screen.width - 0.5F);
+        //rx is now -1.0 to 1.0, need to rescale so that max is tableWidth/2 = 2.0/2.0 = 1.0, so no change!
+        rx *= tableWidth / 2.0F;
+        float ry = 2.0F * (fidPosition.y / Screen.height - 0.5F);
+        //ry is now -1.0 to 1.0, need to rescale so that max is tableHeight/2 = 1.85/2.0 = 0.925
+        ry *= tableHeight / 2.0F;
+        return new Vector3(rx, 15.0F, ry);
+    }
+
 	/*Updates the GameObject called objectName, moving it to newPosition and
 	* enabling the mesh renderer (+the children's mesh renderers) if setOn*/
 	void updateDebugObject(string objectName, Vector3 newPosition, bool setOn) {
@@ -259,8 +279,6 @@ class Body : MonoBehaviour {
     void updateIngame() {
 		Vector3 mouseWorldPos = getMouseToWorldPosition();
 		//Debug.Log("mouseWorldPos: " + mouseWorldPos.ToString());
-
-
         
         if (bloodAmount <= 0.0F) {
             changeStateToGameOver();
@@ -268,26 +286,31 @@ class Body : MonoBehaviour {
 
 		//debug stuff, press keys to add things such as scalpels and bacterial gels to the position of the mouse.
 		if (Input.GetKeyDown(KeyCode.S)) {
-			if (Input.GetKey(KeyCode.LeftShift)) {
-				getFiducial(FID_SCALPEL).active = false;
-				updateDebugObject("scalpel_debug", mouseWorldPos, false);
+            Fiducial scalpel = getFiducial(FID_SCALPEL);
+			if (Input.GetKey(KeyCode.LeftShift)) {                
+				scalpel.active = false;
+                updateDebugObject("scalpel_debug", mouseWorldPos, false);
+                scalpel.position = mouseWorldPos;
 				Debug.Log("Scalpel de-activated");
 			} else {
-				getFiducial(FID_SCALPEL).active = true;
-				getFiducial(FID_SCALPEL).position = mouseWorldPos;
+				scalpel.active = true;
+                scalpel.position = mouseWorldPos;
+				//scalpel.position = mouseWorldPos;
 				Debug.Log("Scalpel activated");
-				updateDebugObject("scalpel_debug", mouseWorldPos, true);
+                updateDebugObject("scalpel_debug", mouseWorldPos, true);
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.G)) {
 			if (Input.GetKey(KeyCode.LeftShift)) {
 				getFiducial(FID_BACTERIALGEL).active = false;
-				updateDebugObject("bacterialgel_debug", mouseWorldPos, false);
+                getFiducial(FID_BACTERIALGEL).position = mouseWorldPos;
+                updateDebugObject("bacterialgel_debug", mouseWorldPos, false);
 				Debug.Log("Gel de-activated");
 			} else {
 				getFiducial(FID_BACTERIALGEL).active = true;
+                getFiducial(FID_BACTERIALGEL).position = mouseWorldPos;
+                updateDebugObject("bacterialgel_debug", mouseWorldPos, true);
 				Debug.Log("Gel activated");
-				updateDebugObject("bacterialgel_debug", mouseWorldPos, true);
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.B)) {

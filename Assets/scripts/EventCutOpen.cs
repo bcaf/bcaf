@@ -13,6 +13,10 @@ class EventCutOpen : Event {
     const float BACJEL_ADDED_PER_SECOND = 12.0F;
     float bacGelAmountNeeded;
 
+    float scalpelAmount;
+    const float SCALPEL_ADDED_PER_SECOND = 12.0F;
+    float scalpelAmountNeeded;
+
 	List<Vector2> cutPoints = new List<Vector2>();
 	Vector2 cutStartPosition;
 	Vector2 cutEndPosition;
@@ -24,11 +28,11 @@ class EventCutOpen : Event {
         
         state = STATE_NEEDS_BACTERIAL;
         bacGelAmount = 0.0F;
-        bacGelAmountNeeded = 20.0F + 10.0F*body.numPlayers;
+        //bacGelAmountNeeded = 20.0F + 10.0F*body.numPlayers;
+        bacGelAmountNeeded = 30.0F;
 
-		//Cut going in x direction, from -5 to +5
-		cutStartPosition = this.get2dPosition() + new Vector2(-5.0F, 0.0F);
-		cutEndPosition = this.get2dPosition() + new Vector2(5.0F, 0.0F);
+        scalpelAmount = 0.0F;
+        scalpelAmountNeeded = 50.0F;
 
 		Debug.Log("EventCutOpen was created!");
     }
@@ -58,28 +62,13 @@ class EventCutOpen : Event {
             Fiducial scalpel = body.getFiducial(Body.FID_SCALPEL);
             
             if (scalpel.active) {
-				if (cutPoints.Count == 0 || !cutPoints[cutPoints.Count - 1].Equals(scalpel.get2dPosition())) {
-					cutPoints.Add(scalpel.get2dPosition());
-					if (cutPoints.Count > 600) { //don't store too many points
-						cutPoints.RemoveRange(0, 300);
-					}
-				}
 
-				int numCloseCutPoints = 0;
-				Vector2 midCutPosition = cutStartPosition + 0.5F * (cutStartPosition - cutEndPosition);
-				for (int i = 0; i < Mathf.Min(cutPoints.Count, 100); i++) {
+                if ((scalpel.position - this.position).magnitude < 20) {
+                    scalpelAmount += SCALPEL_ADDED_PER_SECOND * Time.deltaTime;
+                }
 
-					if ((cutPoints[i] - midCutPosition).magnitude < 350.0F) {
-						numCloseCutPoints += 1;
-					}
-				}
-				if (cutPoints.Count > 0) {
-					Debug.Log("dist to last cutPoint:" +
-				          (cutPoints[cutPoints.Count-1] - midCutPosition).magnitude.ToString());
-				}
-                Debug.Log("numCloseCutPoints: " + numCloseCutPoints.ToString());
                 
-				if (numCloseCutPoints > 50) {
+				if (scalpelAmount >= scalpelAmountNeeded) {
                     state = STATE_FINAL;
 
 					if (body.chance(0.7F)) {
