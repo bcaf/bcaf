@@ -56,7 +56,6 @@ public class FollowMouseMovement : MonoBehaviour {
 		// Move with mouse
 		float dist = transform.position.z - Camera.main.transform.position.z;
 		Vector3 pos = Input.mousePosition;
-<<<<<<< HEAD
 		pos.z = dist;
 		pos = Camera.main.ScreenToWorldPoint(pos);
 		pos.y = transform.position.y;
@@ -211,11 +210,6 @@ public class FollowMouseMovement : MonoBehaviour {
 				nearestVertex = vertex;
 			}
 		}
-=======
-		pos.z = transform.position.z - Camera.main.transform.position.z;
-		transform.position = Camera.main.ScreenToWorldPoint(pos);
-		//print (transform.position);
->>>>>>> origin/master
 
 		return nearestVertex;
 		
