@@ -6,7 +6,11 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 
+<<<<<<< HEAD
 /*class Fiducial {
+=======
+public class Fiducial {
+>>>>>>> origin/master
     public int id;
     public Vector3 position;
     public float rotation;
