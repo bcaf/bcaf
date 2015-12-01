@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 5fa380aea0921434497fa28c4f5581a7
-timeCreated: 1448972628
+guid: 8ff582cd3f6df514ba21cb507ea9faa2
+timeCreated: 1448989439
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
@@ -9,7 +9,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Plane
+    4300000: Icosphere.001
   materials:
     importMaterials: 1
     materialName: 0
