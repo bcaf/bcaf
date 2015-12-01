@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 
-/*public class Fiducial {
+public class Fiducial {
     public int id;
     public Vector3 position;
     public float rotation;
@@ -22,6 +22,10 @@ using System.Net.Sockets;
         active = active_;
     }
 
+	public Fiducial(int id_) {
+		id = id_;
+	}
+
     public void setPosition(Vector3 position_)
     {
         position = position_;
@@ -30,7 +34,7 @@ using System.Net.Sockets;
     public void update() {
         //update position, rotation, active of id=id
     }
-}*/
+}
 
 public class Communication : MonoBehaviour {
     public StreamReader srNew;
