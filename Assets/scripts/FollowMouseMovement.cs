@@ -18,9 +18,9 @@ public class FollowMouseMovement : MonoBehaviour {
 
 	List<Vector3> linePoints = new List<Vector3>();
 	LineRenderer lineRenderer;
-	public float startWidth = 0.1f;
-	public float endWidth = 0.1f;
-	public float threshold = 0.5f;
+	public float startWidth = 1.0f;
+	public float endWidth = 1.0f;
+	public float threshold = 1.0f;
 	int lineCount = 0;
 	
 	Vector3 lastPos = Vector3.one * float.MaxValue;
@@ -66,7 +66,7 @@ public class FollowMouseMovement : MonoBehaviour {
 
 		// Events
 		if (Input.GetMouseButton (0)) {
-			//draw ();
+			//draw();
 		}
 
 		if (Input.GetMouseButtonUp (0)) {
@@ -77,6 +77,7 @@ public class FollowMouseMovement : MonoBehaviour {
 		}
 
 		if (Input.GetMouseButtonDown (0)) {
+			// Simple click mech cutting below
 
 			Vector3 mouseClickPos = tool.transform.position;
 			Vector3 nearestPoint = NearestVertexTo(mouseClickPos);
@@ -98,7 +99,7 @@ public class FollowMouseMovement : MonoBehaviour {
 
 		}
 
-		if (Input.GetMouseButtonDown (1)) {
+		if (Input.GetKeyDown("r")) {
 			triangles = new List<int>();
 			foreach (int triangle in originalFaces) {
 				triangles.Add (triangle);
@@ -185,7 +186,7 @@ public class FollowMouseMovement : MonoBehaviour {
 
 	void updateMesh()
 	{
-		// Also add mesh.uv here
+		// Todo add mesh.uv here
 		mesh.Clear();
 		mesh.vertices = vertices.ToArray();
 		mesh.triangles = triangles.ToArray();
