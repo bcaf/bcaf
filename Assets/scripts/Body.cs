@@ -35,7 +35,22 @@ public class Fiducial {
     {
         position = position_;
     }
-    
+
+    public void setRotation(float rotation_)
+    {
+        rotation = rotation_;
+    }
+
+    public void setActive()
+    {
+        active = true;
+    }
+
+    public void setInactive()
+    {
+        active = false;
+    }
+
     public void update() {
         //update position, rotation, active of id=id
     }
@@ -167,9 +182,13 @@ class Body : MonoBehaviour {
 
             Vector3 position = getFidToWorldPosition(new Vector3(X, 0.0F, Y));
             if (!fd.ContainsKey(Tag))
-                fd.Add(Tag, new Fiducial(Tag, position, Rad, true));
+                fd.Add(Tag, new Fiducial(Tag, position, Angle, true));
             else
+            {
                 fd[Tag].setPosition(position);
+                fd[Tag].setActive();
+                fd[Tag].setRotation(Angle);
+            }
             Debug.Log("Added fiducal " + Tag + " at (" + X + "," + Y + "), UnityPos: ("
                 + position.x + ", " + position.y + ", " + position.z + ")");
         }
@@ -187,9 +206,13 @@ class Body : MonoBehaviour {
 
             //fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
             if (!fd.ContainsKey(Tag))
-                fd.Add(Tag, new Fiducial(Tag, position, Rad, true));
+                fd.Add(Tag, new Fiducial(Tag, position, Angle, true));
             else
+            {
                 fd[Tag].setPosition(position);
+                fd[Tag].setActive();
+                fd[Tag].setRotation(Angle);
+            }
 
             Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
         }
@@ -198,7 +221,7 @@ class Body : MonoBehaviour {
             int Tag = Convert.ToInt32(srDelete.ReadLine());
             if (fd.ContainsKey(Tag))
             {
-                fd[Tag].active = false;
+                fd[Tag].setInactive();
             }
             else
             {
