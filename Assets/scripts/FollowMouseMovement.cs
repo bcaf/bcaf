@@ -32,7 +32,7 @@ public class FollowMouseMovement : MonoBehaviour {
 
 	void Start () {
 		// Initialize everything
-		previousDistance = 1000;
+		previousDistance = Mathf.Infinity;
 		vertsToAlign = new List<Vector3>();
 		alignedVerts = new List<Vector3>();
 		vertices = new List<Vector3>();
