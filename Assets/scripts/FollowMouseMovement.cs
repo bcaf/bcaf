@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class FollowMouseMovement : MonoBehaviour {
 
 	public GameObject body;
-	public GameObject tool;
 	private Mesh mesh;
 	private List<Vector3> vertices;
 	private int[] originalFaces;
@@ -92,6 +91,17 @@ public class FollowMouseMovement : MonoBehaviour {
 			updateMesh();
 			
 		}
+
+		if (Input.GetKeyDown("y")) {
+			//var testing = Instantiate(tool, transform.position,Quaternion.identity);
+			//testing.
+			
+		}
+
+		if (Input.GetKeyDown("t")) {
+			//Destroy(tool);
+			
+		}
 		
 	}
 
@@ -112,7 +122,7 @@ public class FollowMouseMovement : MonoBehaviour {
 	{
 
 		// mouse draw event
-		Vector3 mouseWorld = tool.transform.position;
+		Vector3 mouseWorld = transform.position;
 		
 		float d = Vector3.Distance(lastPos, mouseWorld);
 		if(d <= threshold)
@@ -187,7 +197,7 @@ public class FollowMouseMovement : MonoBehaviour {
 	{
 		// Simple click mech cutting below
 		
-		Vector3 mouseClickPos = tool.transform.position;
+		Vector3 mouseClickPos = transform.position;
 		//print ("mouse: " + mouseClickPos.ToString ());
 		Vector3 nearestPoint = NearestVertexTo(mouseClickPos);
 		//print ("nearest: " + nearestPoint.ToString ());

@@ -13,7 +13,8 @@ public class HeartInteraction : MonoBehaviour {
 
 	}
 
-	void OnMouseDown(){
+	void OnMouseUp(){
+		print ("hej");
 		if(Input.GetMouseButtonDown(0)){
 			print ("hej");
 		}
