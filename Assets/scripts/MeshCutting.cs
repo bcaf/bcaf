@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class FollowMouseMovement : MonoBehaviour {
+public class MeshCutting : MonoBehaviour {
 
 	public GameObject body;
+	public GameObject tool;
 	private Mesh mesh;
 	private List<Vector3> vertices;
 	private int[] originalFaces;
@@ -53,12 +54,12 @@ public class FollowMouseMovement : MonoBehaviour {
 	void Update () {
 
 		// Move with mouse
-		float dist = transform.position.z - Camera.main.transform.position.z;
+		/*float dist = transform.position.z - Camera.main.transform.position.z;
 		Vector3 pos = Input.mousePosition;
 		pos.z = dist;
 		pos = Camera.main.ScreenToWorldPoint(pos);
 		pos.y = transform.position.y;
-		transform.position = pos;
+		transform.position = pos;*/
 
 		// Mesh code
 		mesh = body.GetComponent<MeshFilter>().mesh;
@@ -93,13 +94,13 @@ public class FollowMouseMovement : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown("y")) {
-			//var testing = Instantiate(tool, transform.position,Quaternion.identity);
-			//testing.
+			var testing = Instantiate(tool, transform.position,Quaternion.identity);
+
 			
 		}
 
 		if (Input.GetKeyDown("t")) {
-			//Destroy(tool);
+			Destroy(tool);
 			
 		}
 		
@@ -122,7 +123,7 @@ public class FollowMouseMovement : MonoBehaviour {
 	{
 
 		// mouse draw event
-		Vector3 mouseWorld = transform.position;
+		Vector3 mouseWorld = tool.transform.position;
 		
 		float d = Vector3.Distance(lastPos, mouseWorld);
 		if(d <= threshold)
@@ -197,7 +198,7 @@ public class FollowMouseMovement : MonoBehaviour {
 	{
 		// Simple click mech cutting below
 		
-		Vector3 mouseClickPos = transform.position;
+		Vector3 mouseClickPos = tool.transform.position;
 		//print ("mouse: " + mouseClickPos.ToString ());
 		Vector3 nearestPoint = NearestVertexTo(mouseClickPos);
 		//print ("nearest: " + nearestPoint.ToString ());
