@@ -93,12 +93,6 @@ class Body : MonoBehaviour {
     public Dictionary<int, Fiducial> fd;
     
     void Start() {
-        //fs = new Fiducial[NUM_FIDUCIALS];
-        /*for (int i = 0; i < NUM_FIDUCIALS; i++) {
-            getFiducial(i) = new Fiducial(i);
-        }
-        */
-        
         events = new List<Event>();
         
         numPlayers = 0;
@@ -152,14 +146,7 @@ class Body : MonoBehaviour {
     }
     
     void Update() {
-        //Communication comm = (Communication) GameObject.Find("Main Camera").GetComponent<Communication>();
-        //fids = comm.updateFiducials();
-		//for (int i = 0; i < NUM_FIDUCIALS; i++) { getFiducial(i).update(); }
-		//foreach (Fiducial f in fs)       { f.update(); }
 		foreach (Event e in this.events) {
-			//Debug.Log("event type: " + e.GetType().ToString());
-
-			//TODO: there has to be a better way of doing this...
 			if (e is EventCutOpen) {
 				((EventCutOpen)e).update();
 			}
