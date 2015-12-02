@@ -67,6 +67,7 @@ public class FollowMouseMovement : MonoBehaviour {
 		// Events
 		if (Input.GetMouseButton (0)) {
 			//draw();
+			simpleMeshCutting();
 		}
 
 		if (Input.GetMouseButtonUp (0)) {
@@ -77,25 +78,8 @@ public class FollowMouseMovement : MonoBehaviour {
 		}
 
 		if (Input.GetMouseButtonDown (0)) {
-			// Simple click mech cutting below
 
-			Vector3 mouseClickPos = tool.transform.position;
-			Vector3 nearestPoint = NearestVertexTo(mouseClickPos);
-			var n = 0;
-
-			for(int i = 0; i < triangles.Count-2; i+=3){
-				var vertPos1 = triangles[i];
-				var vertPos2 = triangles[i+1];
-				var vertPos3 = triangles[i+2];
-				if((vertices[vertPos1] == nearestPoint) || (vertices[vertPos2] == nearestPoint) || (vertices[vertPos3] == nearestPoint))
-				{
-					triangles.RemoveAt(i);
-					triangles.RemoveAt(i+1);
-					triangles.RemoveAt(i+2);
-				}
-			}
-
-			updateMesh();
+			//simpleMeshCutting();
 
 		}
 
@@ -163,6 +147,7 @@ public class FollowMouseMovement : MonoBehaviour {
 	void removeTriangles()
 	{
 		var counter = 0;
+		var letsBreak = false;
 
 		for(int i = 0; i < triangles.Count-2; i+=3){
 
@@ -175,11 +160,15 @@ public class FollowMouseMovement : MonoBehaviour {
 					//counter+=1;
 					// Calculate which triangles to remove here
 					triangles.RemoveAt(i);
-					triangles.RemoveAt(i+1);
-					triangles.RemoveAt(i+2);
+					triangles.RemoveAt(i);
+					triangles.RemoveAt(i);
+					letsBreak = true;
+					break;
 					// print (n);
 				}
 			}
+			if(letsBreak)
+				break;
 		}
 
 	}
@@ -194,15 +183,43 @@ public class FollowMouseMovement : MonoBehaviour {
 		mesh.RecalculateNormals();
 	}
 
+	void simpleMeshCutting()
+	{
+		// Simple click mech cutting below
+		
+		Vector3 mouseClickPos = tool.transform.position;
+		//print ("mouse: " + mouseClickPos.ToString ());
+		Vector3 nearestPoint = NearestVertexTo(mouseClickPos);
+		//print ("nearest: " + nearestPoint.ToString ());
+		var n = 0;
+		
+		for(int i = 0; i < triangles.Count-2; i+=3){
+			var vertPos1 = triangles[i];
+			var vertPos2 = triangles[i+1];
+			var vertPos3 = triangles[i+2];
+			if((vertices[vertPos1] == nearestPoint) || (vertices[vertPos2] == nearestPoint) || (vertices[vertPos3] == nearestPoint))
+			{
+				triangles.RemoveAt(i);
+				triangles.RemoveAt(i);
+				triangles.RemoveAt(i);
+				break;
+			}
+		}
+		
+		updateMesh();
+	}
+
 	public Vector3 NearestVertexTo(Vector3 point)
 	{
+		//Debug.Log ("point: " + point.ToString ());
+		//point = point + new Vector3(0.0F, 0.0F, -11.0F);
 
 		float minDistanceSqr = Mathf.Infinity;
 		Vector3 nearestVertex = Vector3.zero;
 
 		foreach (Vector3 vertex in vertices)
 		{
-			Vector3 diff = point-vertex;
+			Vector3 diff = point - vertex;
 			float distSqr = diff.sqrMagnitude;
 			if (distSqr < minDistanceSqr)
 			{
