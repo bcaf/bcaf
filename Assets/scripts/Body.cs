@@ -12,8 +12,8 @@ public class Fiducial {
     public float rotation;
     public bool active;
 
-	public Vector2 get2dPosition() {
-		return new Vector2(position.x, position.z);
+    public Vector2 get2dPosition() {
+        return new Vector2(position.x, position.z);
     }
 
     public Fiducial(int id_) {
@@ -134,7 +134,14 @@ class Body : MonoBehaviour {
     }
     
     void changeStateToIngame() {
-        events.Add(new EventCutOpen(this, new Vector3(-75.0F, 58.0F, -38.0F))); //Add initial event
+        //events.Add(new EventCutOpen(this, new Vector3(-75.0F, 58.0F, -38.0F))); //Add initial event
+        //events.Add(new EventCutOpen(this, GameObject.Find("label_cutopenevent").GetComponent<Text>().position)); //Add initial event
+        events.Add(new EventCutOpen(this, 
+            GameObject.Find("label_cutopenevent").GetComponent<Transform>().position
+        )); //Add initial event
+
+        Debug.Log("Added cutopenevent to position: " + GameObject.Find("label_cutopenevent").GetComponent<Transform>().position.ToString());
+        
         this.state = "ingame";
     }
     
@@ -146,11 +153,11 @@ class Body : MonoBehaviour {
     }
     
     void Update() {
-		foreach (Event e in this.events) {
-			if (e is EventCutOpen) {
-				((EventCutOpen)e).update();
-			}
-		}
+        foreach (Event e in this.events) {
+            if (e is EventCutOpen) {
+                ((EventCutOpen)e).update();
+            }
+        }
         
         if (this.state == "notstarted") { updateGameNotStarted();
         } else if (this.state == "ingame") { updateIngame();
@@ -223,18 +230,18 @@ class Body : MonoBehaviour {
     
     /** Here we update things that happens before the game starts */
     void updateGameNotStarted() {
-		bool gameStarted = false;
+        bool gameStarted = false;
 
-			//debug: press space to start
-			if (Input.GetKeyDown(KeyCode.Space)) {
-				gameStarted = true;
-			}
+            //debug: press space to start
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                gameStarted = true;
+            }
 
         if (gameStarted) {
 //            int numActiveGloves = getFiducial(GLOVE0).active + getFiducial(GLOVE1).active +
 //                getFiducial(GLOVE2).active + getFiducial(GLOVE3).active;
-			int numActiveGloves = 0;
-			numActiveGloves += getFiducial(FID_GLOVE0).active ? 1 : 0;
+            int numActiveGloves = 0;
+            numActiveGloves += getFiducial(FID_GLOVE0).active ? 1 : 0;
             numActiveGloves += getFiducial(FID_GLOVE1).active ? 1 : 0;
             numActiveGloves += getFiducial(FID_GLOVE2).active ? 1 : 0;
             numActiveGloves += getFiducial(FID_GLOVE3).active ? 1 : 0;
@@ -243,21 +250,21 @@ class Body : MonoBehaviour {
         }
     }
 
-	Vector3 getMouseToWorldPosition() {
-		//Input.mousePosition: "The bottom-left of the screen or window is at (0, 0).
-		//The top-right of the screen or window is at (Screen.width, Screen.height).
+    Vector3 getMouseToWorldPosition() {
+        //Input.mousePosition: "The bottom-left of the screen or window is at (0, 0).
+        //The top-right of the screen or window is at (Screen.width, Screen.height).
         
-		float tableWidth = 225.0F;
-		float tableHeight = 400.0F;
+        float tableWidth = 225.0F;
+        float tableHeight = 400.0F;
         
-		float rx = 2.0F * (Input.mousePosition.x / Screen.width - 0.5F);
-		//rx is now -1.0 to 1.0, need to rescale so that max is tableWidth/2 = 2.0/2.0 = 1.0, so no change!
-		rx *= tableWidth / 2.0F;
-		float ry = 2.0F * (Input.mousePosition.y / Screen.height - 0.5F);
-		//ry is now -1.0 to 1.0, need to rescale so that max is tableHeight/2 = 1.85/2.0 = 0.925
-		ry *= tableHeight / 2.0F;
-		return new Vector3(rx, 15.0F, ry);
-	}
+        float rx = 2.0F * (Input.mousePosition.x / Screen.width - 0.5F);
+        //rx is now -1.0 to 1.0, need to rescale so that max is tableWidth/2 = 2.0/2.0 = 1.0, so no change!
+        rx *= tableWidth / 2.0F;
+        float ry = 2.0F * (Input.mousePosition.y / Screen.height - 0.5F);
+        //ry is now -1.0 to 1.0, need to rescale so that max is tableHeight/2 = 1.85/2.0 = 0.925
+        ry *= tableHeight / 2.0F;
+        return new Vector3(rx, 15.0F, ry);
+    }
 
     Vector3 getFidToWorldPosition(Vector3 fidPosition)
     {
@@ -273,65 +280,65 @@ class Body : MonoBehaviour {
         return new Vector3(rx, 15.0F, ry);
     }
 
-	/*Updates the GameObject called objectName, moving it to newPosition and
-	* enabling the mesh renderer (+the children's mesh renderers) if setOn*/
-	void updateDebugObject(string objectName, Vector3 newPosition, bool setOn) {
-		GameObject debug_object = GameObject.Find(objectName);
-		debug_object.GetComponent<Renderer>().enabled = setOn;
-		debug_object.GetComponent<Transform>().position = newPosition;
+    /*Updates the GameObject called objectName, moving it to newPosition and
+    * enabling the mesh renderer (+the children's mesh renderers) if setOn*/
+    void updateDebugObject(string objectName, Vector3 newPosition, bool setOn) {
+        GameObject debug_object = GameObject.Find(objectName);
+        debug_object.GetComponent<Renderer>().enabled = setOn;
+        debug_object.GetComponent<Transform>().position = newPosition;
 
-		//Don't forget to enable/disable the rendering of the object's children
-		foreach (Renderer r in debug_object.GetComponentsInChildren<Renderer>()) {
-			r.enabled = setOn;
-		}
-	}
+        //Don't forget to enable/disable the rendering of the object's children
+        foreach (Renderer r in debug_object.GetComponentsInChildren<Renderer>()) {
+            r.enabled = setOn;
+        }
+    }
     
     void updateIngame() {
-		Vector3 mouseWorldPos = getMouseToWorldPosition();
-		//Debug.Log("mouseWorldPos: " + mouseWorldPos.ToString());
+        Vector3 mouseWorldPos = getMouseToWorldPosition();
+        //Debug.Log("mouseWorldPos: " + mouseWorldPos.ToString());
         
         if (bloodAmount <= 0.0F) {
             changeStateToGameOver();
         }
 
-		//debug stuff, press keys to add things such as scalpels and bacterial gels to the position of the mouse.
-		if (Input.GetKeyDown(KeyCode.S)) {
+        //debug stuff, press keys to add things such as scalpels and bacterial gels to the position of the mouse.
+        if (Input.GetKeyDown(KeyCode.S)) {
             Fiducial scalpel = getFiducial(FID_SCALPEL);
-			if (Input.GetKey(KeyCode.LeftShift)) {                
-				scalpel.active = false;
+            if (Input.GetKey(KeyCode.LeftShift)) {                
+                scalpel.active = false;
                 updateDebugObject("scalpel_debug", mouseWorldPos, false);
                 scalpel.position = mouseWorldPos;
-				Debug.Log("Scalpel de-activated");
-			} else {
-				scalpel.active = true;
+                Debug.Log("Scalpel de-activated");
+            } else {
+                scalpel.active = true;
                 scalpel.position = mouseWorldPos;
-				//scalpel.position = mouseWorldPos;
-				Debug.Log("Scalpel activated");
+                //scalpel.position = mouseWorldPos;
+                Debug.Log("Scalpel activated");
                 updateDebugObject("scalpel_debug", mouseWorldPos, true);
-			}
-		}
-		if (Input.GetKeyDown(KeyCode.G)) {
-			if (Input.GetKey(KeyCode.LeftShift)) {
-				getFiducial(FID_BACTERIALGEL).active = false;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.G)) {
+            if (Input.GetKey(KeyCode.LeftShift)) {
+                getFiducial(FID_BACTERIALGEL).active = false;
                 getFiducial(FID_BACTERIALGEL).position = mouseWorldPos;
                 updateDebugObject("bacterialgel_debug", mouseWorldPos, false);
-				Debug.Log("Gel de-activated");
-			} else {
-				getFiducial(FID_BACTERIALGEL).active = true;
+                Debug.Log("Gel de-activated");
+            } else {
+                getFiducial(FID_BACTERIALGEL).active = true;
                 getFiducial(FID_BACTERIALGEL).position = mouseWorldPos;
                 updateDebugObject("bacterialgel_debug", mouseWorldPos, true);
-				Debug.Log("Gel activated");
-			}
-		}
-		if (Input.GetKeyDown(KeyCode.B)) {
-			if (Input.GetKey(KeyCode.LeftShift)) {
-				getFiducial(FID_BLOODBAG).active = false;
-				Debug.Log("Bloodbag de-activated");
-			} else {
-				getFiducial(FID_BLOODBAG).active = true;
-				Debug.Log("Bloodbag activated");
-			}
-		}
+                Debug.Log("Gel activated");
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.B)) {
+            if (Input.GetKey(KeyCode.LeftShift)) {
+                getFiducial(FID_BLOODBAG).active = false;
+                Debug.Log("Bloodbag de-activated");
+            } else {
+                getFiducial(FID_BLOODBAG).active = true;
+                Debug.Log("Bloodbag activated");
+            }
+        }
 
     }
     
@@ -344,25 +351,29 @@ class Body : MonoBehaviour {
     }
     
     void OnGUI() {
-		GameObject.Find("label_blood").GetComponent<Text>().text = 
-			"Blood left:\n" + this.bloodAmount + " ml";
+        GameObject.Find("label_blood").GetComponent<Text>().text = 
+            "Blood left:\n" + this.bloodAmount + " ml";
 
-		string label_cutopenevent_text = "(cutopenevent\nnot active)";
+        string label_cutopenevent_text = "(cutopenevent\nnot active)";
 
-		foreach (Event e in this.events) {
-			if (e.GetType() == typeof(EventCutOpen)) {
-				label_cutopenevent_text = "(cutopenevent\nACTIVE!)";
-			}
-		}
+        foreach (Event e in this.events) {
+            if (e.GetType() == typeof(EventCutOpen)) {
+                if (((EventCutOpen)e).bacGelAmount == 0.0F) {
+                    label_cutopenevent_text = "(cutopenevent\nACTIVE!)";
+                    Debug.Log("Changed label_cutopenevent text");
+                }
+            }
+        }
 
-		GameObject.Find("label_cutopenevent").GetComponent<Text>().text = label_cutopenevent_text;
+        GameObject.Find("label_cutopenevent").GetComponent<Text>().text = label_cutopenevent_text;
 
-		GameObject.Find ("label_statedebug").GetComponent<Text>().text = "STATE: " + this.state;
+        GameObject.Find ("label_statedebug").GetComponent<Text>().text = "STATE: " + this.state;
     }
 
-	public bool chance(float value) { //helper function
-		return UnityEngine.Random.Range(0.0F, 1.0F) < value;
-	}
+    public bool chance(float value) { //helper function
+        return UnityEngine.Random.Range(0.0F, 1.0F) < value;
+        //hej
+    }
 
     public Fiducial getFiducial(int ID_)
     {
