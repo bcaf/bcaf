@@ -5,15 +5,15 @@ public class ChangeTexture : MonoBehaviour {
 
 	public Texture[] textures;
 	public int currentTexture;
-
-	// Use this for initialization
+	bool complain;
+	
 	void Start () {
 
+		complain = false;
 		StartCoroutine(BlinkTimer());
 	
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 
 		if (Input.GetKeyDown ("p")) {
@@ -34,10 +34,21 @@ public class ChangeTexture : MonoBehaviour {
 	}
 
 	public IEnumerator BlinkTimer() {
+		var randomInt = Random.Range (0, 3);
+		if (randomInt == 0) {
+			complain = true;
+		}
 		yield return new WaitForSeconds(Random.Range(2.0f, 5.0f));
 		GetComponent<Renderer>().material.mainTexture = textures[3];
 		yield return new WaitForSeconds(0.1f);
 		GetComponent<Renderer>().material.mainTexture = textures[0];
+		if (complain) {
+			yield return new WaitForSeconds(Random.Range(2.0f, 5.0f));
+			GetComponent<Renderer>().material.mainTexture = textures[1];
+			yield return new WaitForSeconds(0.5f);
+			GetComponent<Renderer>().material.mainTexture = textures[0];
+			complain = false;
+		}
 		StartCoroutine(BlinkTimer());
 	}
 }
