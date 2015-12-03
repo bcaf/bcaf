@@ -34,7 +34,7 @@ public class ChangeTexture : MonoBehaviour {
 	}
 
 	public IEnumerator BlinkTimer() {
-		yield return new WaitForSeconds(Random.Range(3.0f, 6.0f));
+		yield return new WaitForSeconds(Random.Range(2.0f, 5.0f));
 		GetComponent<Renderer>().material.mainTexture = textures[3];
 		yield return new WaitForSeconds(0.1f);
 		GetComponent<Renderer>().material.mainTexture = textures[0];
