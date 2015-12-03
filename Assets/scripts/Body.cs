@@ -176,66 +176,7 @@ class Body : MonoBehaviour {
         } else if (this.state == "gameover") {
         }
 
-        // Comm paste
-        if (gs.clientNew != null && gs.clientNew.Available > 0) {
-            int ID = Convert.ToInt32(gs.srNew.ReadLine()); // ID is not bound to the fiducal.
-            int Tag = Convert.ToInt32(gs.srNew.ReadLine()); // Tag is a 'long' bound to the fiducal
-            float X = Convert.ToSingle(gs.srNew.ReadLine());
-            float Y = Convert.ToSingle(gs.srNew.ReadLine());
-            int Rad = Convert.ToInt32(gs.srNew.ReadLine());
-            float Angle = ((float)Rad * 3.1415f / 180.0f) / 100.0f;
-
-            Vector3 position = getFidToWorldPosition(new Vector3(X, 0.0F, Y));
-            if (!fd.ContainsKey(Tag))
-                fd.Add(Tag, new Fiducial(Tag, position, Angle, true));
-            else
-            {
-                fd[Tag].setPosition(position);
-                fd[Tag].setActive();
-                fd[Tag].setRotation(Angle);
-            }
-            Debug.Log("Added fiducal " + Tag + " at (" + X + "," + Y + "), UnityPos: ("
-                + position.x + ", " + position.y + ", " + position.z + ")");
-        }
-
-        if (gs.clientUpdate != null && gs.clientUpdate.Available > 0)
-        {
-            int ID = Convert.ToInt32(gs.srUpdate.ReadLine());
-            int Tag = Convert.ToInt32(gs.srUpdate.ReadLine());
-            float X = Convert.ToSingle(gs.srUpdate.ReadLine());
-            float Y = Convert.ToSingle(gs.srUpdate.ReadLine());
-            float Rad = Convert.ToSingle(gs.srUpdate.ReadLine()) / 100f;
-            float Angle = (Rad * 180f / 3.1415f);
-
-            Vector3 position = getFidToWorldPosition(new Vector3(X, 0.0F, Y));
-
-            //fd.Add(Tag, new Fiducial(Tag, position,Rad, true));
-            if (!fd.ContainsKey(Tag))
-                fd.Add(Tag, new Fiducial(Tag, position, Angle, true));
-            else
-            {
-                fd[Tag].setPosition(position);
-                fd[Tag].setActive();
-                fd[Tag].setRotation(Angle);
-            }
-
-            //Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
-        }
-        if (gs.clientDelete != null && gs.clientDelete.Available > 0)
-        {
-            int Tag = Convert.ToInt32(gs.srDelete.ReadLine());
-            if (fd.ContainsKey(Tag))
-            {
-                fd[Tag].setInactive();
-            }
-            else
-            {
-                Debug.Log("Tried to delete fiducial " + Tag
-                    + " but it's not in fd!");
-            }
-
-            Debug.Log("Removed fiducal " + Tag);
-        }
+        
     }
     
     
