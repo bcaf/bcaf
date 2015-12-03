@@ -69,6 +69,8 @@ class Body : MonoBehaviour {
     public const int FID_BLOODBAG = 6;
     public const int FID_SYRINGE = 7;
     public const float START_BLOOD_AMOUNT = 5000.0F;
+
+    public GameObject BleedEventPrefab;
     
     public Fiducial[] fs;
     string state; //"notstarted", "ingame" or "gameover"
@@ -135,13 +137,10 @@ class Body : MonoBehaviour {
     
     void changeStateToIngame() {
         //events.Add(new EventCutOpen(this, new Vector3(-75.0F, 58.0F, -38.0F))); //Add initial event
-        //events.Add(new EventCutOpen(this, GameObject.Find("label_cutopenevent").GetComponent<Text>().position)); //Add initial event
-        events.Add(new EventCutOpen(this, 
-            GameObject.Find("label_cutopenevent").GetComponent<Transform>().position
-        )); //Add initial event
-
-        Debug.Log("Added cutopenevent to position: " + GameObject.Find("label_cutopenevent").GetComponent<Transform>().position.ToString());
-        
+        GameObject eventBleed = Instantiate(BleedEventPrefab);
+        //eventBleed.transform.parent = GameObject.Find("Canvas").transform;
+        eventBleed.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        eventBleed.GetComponent<EventDrainBlood>().setBody(this);
         this.state = "ingame";
     }
     
@@ -356,7 +355,7 @@ class Body : MonoBehaviour {
 
         string label_cutopenevent_text = "(cutopenevent\nnot active)";
 
-        foreach (Event e in this.events) {
+        /*foreach (Event e in this.events) {
             if (e.GetType() == typeof(EventCutOpen)) {
                 if (((EventCutOpen)e).bacGelAmount == 0.0F) {
                     label_cutopenevent_text = "(cutopenevent\nACTIVE!)";
@@ -364,6 +363,7 @@ class Body : MonoBehaviour {
                 }
             }
         }
+        */
 
         GameObject.Find("label_cutopenevent").GetComponent<Text>().text = label_cutopenevent_text;
 
@@ -372,7 +372,6 @@ class Body : MonoBehaviour {
 
     public bool chance(float value) { //helper function
         return UnityEngine.Random.Range(0.0F, 1.0F) < value;
-        //hej
     }
 
     public Fiducial getFiducial(int ID_)
@@ -386,6 +385,7 @@ class Body : MonoBehaviour {
         else
         {
             Fiducial dummy = new Fiducial(ID_);
+            fd.Add(ID_, dummy);
             return dummy;
         }
     }
