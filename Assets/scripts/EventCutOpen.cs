@@ -40,10 +40,6 @@ class EventCutOpen : Event {
 
         Debug.Log("EventCutOpen was created!");
     }
-
-    public Vector3 get2dPositionAsVector3() {
-        return new Vector3(this.position.x, 0.0F, this.position.z);
-    }
     
     public void update() {
         //Debug.Log("In EventCutOpen.update(), state = " + state.ToString());

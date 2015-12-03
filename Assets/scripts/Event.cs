@@ -20,6 +20,11 @@ class Event : MonoBehaviour {
 	public Vector2 get2dPosition() {
 		return new Vector2(position.x, position.z);
     }
+
+    public Vector3 get2dPositionAsVector3()
+    {
+        return new Vector3(this.position.x, 0.0F, this.position.z);
+    }
     
     /*this is called whenever gameOver happens.
     Cleanly stop current animations and things like that.*/

@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 
+/*
 public class Fiducial {
     public int id;
     public Vector3 position;
@@ -55,6 +56,7 @@ public class Fiducial {
         //update position, rotation, active of id=id
     }
 }
+*/
 
 class Body : MonoBehaviour {
     private const int NUM_FIDUCIALS = 50;
@@ -79,6 +81,7 @@ class Body : MonoBehaviour {
     public int numPlayers;
     public float bloodAmount;
 
+    /*
     public StreamReader srNew;
     public StreamWriter swNew;
     public Stream sNew;
@@ -91,10 +94,16 @@ class Body : MonoBehaviour {
     public TcpClient clientNew;
     public TcpClient clientUpdate;
     public TcpClient clientDelete;
+     * */
 
     public Dictionary<int, Fiducial> fd;
+
+    globalsettings gs;
     
     void Start() {
+
+        gs = GameObject.Find("GlobalSettings").GetComponent<globalsettings>();
+
         events = new List<Event>();
         
         numPlayers = 0;
@@ -103,6 +112,8 @@ class Body : MonoBehaviour {
         
         changeStateToGameNotStarted();
 
+        fd = gs.fd;
+        /*
         fd = new Dictionary<int, Fiducial>();
 
         try
@@ -129,6 +140,7 @@ class Body : MonoBehaviour {
             Debug.Log("SocketException!");
         }
         finally { }
+         * */
     }
     
     void changeStateToGameNotStarted() {
@@ -165,12 +177,12 @@ class Body : MonoBehaviour {
         }
 
         // Comm paste
-        if (clientNew != null && clientNew.Available > 0) {
-            int ID = Convert.ToInt32(srNew.ReadLine()); // ID is not bound to the fiducal.
-            int Tag = Convert.ToInt32(srNew.ReadLine()); // Tag is a 'long' bound to the fiducal
-            float X = Convert.ToSingle(srNew.ReadLine());
-            float Y = Convert.ToSingle(srNew.ReadLine());
-            int Rad = Convert.ToInt32(srNew.ReadLine());
+        if (gs.clientNew != null && gs.clientNew.Available > 0) {
+            int ID = Convert.ToInt32(gs.srNew.ReadLine()); // ID is not bound to the fiducal.
+            int Tag = Convert.ToInt32(gs.srNew.ReadLine()); // Tag is a 'long' bound to the fiducal
+            float X = Convert.ToSingle(gs.srNew.ReadLine());
+            float Y = Convert.ToSingle(gs.srNew.ReadLine());
+            int Rad = Convert.ToInt32(gs.srNew.ReadLine());
             float Angle = ((float)Rad * 3.1415f / 180.0f) / 100.0f;
 
             Vector3 position = getFidToWorldPosition(new Vector3(X, 0.0F, Y));
@@ -186,13 +198,13 @@ class Body : MonoBehaviour {
                 + position.x + ", " + position.y + ", " + position.z + ")");
         }
 
-        if (clientUpdate != null && clientUpdate.Available > 0)
+        if (gs.clientUpdate != null && gs.clientUpdate.Available > 0)
         {
-            int ID = Convert.ToInt32(srUpdate.ReadLine());
-            int Tag = Convert.ToInt32(srUpdate.ReadLine());
-            float X = Convert.ToSingle(srUpdate.ReadLine());
-            float Y = Convert.ToSingle(srUpdate.ReadLine());
-            float Rad = Convert.ToSingle(srUpdate.ReadLine()) / 100f;
+            int ID = Convert.ToInt32(gs.srUpdate.ReadLine());
+            int Tag = Convert.ToInt32(gs.srUpdate.ReadLine());
+            float X = Convert.ToSingle(gs.srUpdate.ReadLine());
+            float Y = Convert.ToSingle(gs.srUpdate.ReadLine());
+            float Rad = Convert.ToSingle(gs.srUpdate.ReadLine()) / 100f;
             float Angle = (Rad * 180f / 3.1415f);
 
             Vector3 position = getFidToWorldPosition(new Vector3(X, 0.0F, Y));
@@ -209,9 +221,9 @@ class Body : MonoBehaviour {
 
             //Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
         }
-        if (clientDelete != null && clientDelete.Available > 0)
+        if (gs.clientDelete != null && gs.clientDelete.Available > 0)
         {
-            int Tag = Convert.ToInt32(srDelete.ReadLine());
+            int Tag = Convert.ToInt32(gs.srDelete.ReadLine());
             if (fd.ContainsKey(Tag))
             {
                 fd[Tag].setInactive();
