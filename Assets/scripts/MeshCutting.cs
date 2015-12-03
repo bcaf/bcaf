@@ -70,7 +70,8 @@ public class MeshCutting : MonoBehaviour {
 		if (Input.GetMouseButton (0)) {
 			//draw();
 			bool useMouse = true;
-			simpleMeshCutting(useMouse);
+			//simpleMeshCutting(useMouse);
+			simpleMeshCutting();
 		}
 
 		if (Input.GetMouseButtonUp (0)) {
@@ -197,18 +198,16 @@ public class MeshCutting : MonoBehaviour {
 		mesh.RecalculateNormals();
 	}
 
-	void simpleMeshCutting(bool useMouse)
+	void simpleMeshCutting()
 	{
 		// Simple click mech cutting below
 		
 		var n = 0;
-		if (useMouse) {
 			Vector3 mouseClickPos = tool.transform.position;
 			//print ("mouse: " + mouseClickPos.ToString ());
 			Vector3 nearestPoint = NearestVertexTo(mouseClickPos);
+			Debug.Log("nearestPoint:" + nearestPoint.ToString());
 			//print ("nearest: " + nearestPoint.ToString ());
-		} else {
-		}
 		
 		for(int i = 0; i < triangles.Count-2; i+=3){
 			var vertPos1 = triangles[i];
@@ -216,6 +215,7 @@ public class MeshCutting : MonoBehaviour {
 			var vertPos3 = triangles[i+2];
 			if((vertices[vertPos1] == nearestPoint) || (vertices[vertPos2] == nearestPoint) || (vertices[vertPos3] == nearestPoint))
 			{
+				Debug.Log("removeAt(i) where i = " + i.ToString());
 				triangles.RemoveAt(i);
 				triangles.RemoveAt(i);
 				triangles.RemoveAt(i);

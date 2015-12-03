@@ -223,12 +223,12 @@ class Body : MonoBehaviour {
     
     /** Here we update things that happens before the game starts */
     void updateGameNotStarted() {
-        bool gameStarted = true;
+		bool gameStarted = false;
 
-	//debug: press space to start
-	/*if (Input.GetKeyDown(KeyCode.Space)) {
-		gameStarted = true;
-	}*/
+			//debug: press space to start
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				gameStarted = true;
+			}
 
         if (gameStarted) {
 //            int numActiveGloves = getFiducial(GLOVE0).active + getFiducial(GLOVE1).active +
