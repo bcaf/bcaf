@@ -10,17 +10,20 @@ class EventCutOpen : Event {
     public int state;
     
     public float bacGelAmount; //in cl
-    //const float BACJEL_ADDED_PER_SECOND = 12.0F;
-    const float BACJEL_ADDED_PER_SECOND = 24.0F;
+    const float BACJEL_ADDED_PER_SECOND = 12.0F;
+    //const float BACJEL_ADDED_PER_SECOND = 1.0F;
     float bacGelAmountNeeded;
 
     float scalpelAmount;
-    const float SCALPEL_ADDED_PER_SECOND = 12.0F;
+    //const float SCALPEL_ADDED_PER_SECOND = 12.0F;
+    const float SCALPEL_ADDED_PER_SECOND = 3.0F;
     float scalpelAmountNeeded;
 
     List<Vector2> cutPoints = new List<Vector2>();
     Vector2 cutStartPosition;
     Vector2 cutEndPosition;
+
+    public float distBetweenScalpelAndEvent;
     
     public EventCutOpen(Body body_, Vector3 position_) {
         //Event(body_);
@@ -50,7 +53,11 @@ class EventCutOpen : Event {
             Fiducial bacGelFid = body.getFiducial(Body.FID_BACTERIALGEL);
 
             if (bacGelFid.active) {
-                bacGelAmount += BACJEL_ADDED_PER_SECOND * Time.deltaTime;
+                Debug.Log("bacgeldist: " + (bacGelFid.position - this.get2dPositionAsVector3()).magnitude.ToString());
+
+                if ((bacGelFid.position - this.get2dPositionAsVector3()).magnitude < 20.0F) {
+                    bacGelAmount += BACJEL_ADDED_PER_SECOND * Time.deltaTime;
+                }
                 
                 if (bacGelAmount >= bacGelAmountNeeded) {
                     state = STATE_CUTTING;
@@ -73,8 +80,10 @@ class EventCutOpen : Event {
                 //x.ToString();
                 //float 
 
-                float distBetweenScalpelAndEvent = (scalpel.position - this.get2dPositionAsVector3()).magnitude;
-                Debug.Log("scalpdist: " + distBetweenScalpelAndEvent.ToString());
+                distBetweenScalpelAndEvent = (scalpel.position - this.get2dPositionAsVector3()).magnitude;
+                Debug.Log("scalp pos: " + scalpel.position.ToString() + "this2dpos:"+this.get2dPositionAsVector3().ToString()
+                    + "scalpdist:" + distBetweenScalpelAndEvent.ToString());
+                //Debug.Log("scalpdist: " + distBetweenScalpelAndEvent.ToString());
                 if (distBetweenScalpelAndEvent < 20.0F) {
                     scalpelAmount += SCALPEL_ADDED_PER_SECOND * Time.deltaTime;
                 }
@@ -133,10 +142,12 @@ class EventCutOpen : Event {
 
         if (ratio < 0.01F) {
             GameObject.Find("label_cutopenevent").GetComponent<Text>().text =
-                "Cut open with Scalpel!";
+                //"Cut open with Scalpel!";
+                "Cut open with Scalpel! scalpeldist:" + distBetweenScalpelAndEvent.ToString("0.0");
         } else {
             GameObject.Find("label_cutopenevent").GetComponent<Text>().text =
-                "Keep cutting!\n" + (100.0F*ratio).ToString("0.0") + "%";
+                "Keep cutting!\n" + (100.0F*ratio).ToString("0.0") + "%"
+                + "\nscalpeldist:" + distBetweenScalpelAndEvent.ToString("0.0");
         }
     }
     

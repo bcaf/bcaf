@@ -208,7 +208,7 @@ class Body : MonoBehaviour {
                 fd[Tag].setRotation(Angle);
             }
 
-            Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
+            //Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
         }
         if (clientDelete != null && clientDelete.Available > 0)
         {
@@ -274,10 +274,10 @@ class Body : MonoBehaviour {
         float rx = 2.0F * (fidPosition.x / Screen.width - 0.5F);
         //rx is now -1.0 to 1.0, need to rescale so that max is tableWidth/2 = 2.0/2.0 = 1.0, so no change!
         rx *= tableWidth / 2.0F;
-        float ry = 2.0F * (fidPosition.y / Screen.height - 0.5F);
+        float ry = 2.0F * (fidPosition.z / Screen.height - 0.5F);
         //ry is now -1.0 to 1.0, need to rescale so that max is tableHeight/2 = 1.85/2.0 = 0.925
         ry *= tableHeight / 2.0F;
-        return new Vector3(rx, 15.0F, ry);
+        return new Vector3(rx, 0.0F, ry); //0 is local pos y for Canvas
     }
 
     /*Updates the GameObject called objectName, moving it to newPosition and
@@ -360,7 +360,7 @@ class Body : MonoBehaviour {
             if (e.GetType() == typeof(EventCutOpen)) {
                 if (((EventCutOpen)e).bacGelAmount == 0.0F) {
                     label_cutopenevent_text = "(cutopenevent\nACTIVE!)";
-                    Debug.Log("Changed label_cutopenevent text");
+                    //Debug.Log("Changed label_cutopenevent text");
                 }
             }
         }
