@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class MeshCutting : MonoBehaviour {
 
-	public GameObject body;
+	public GameObject skin;
 	public GameObject tool;
 	private Mesh mesh;
 	private List<Vector3> vertices;
@@ -31,6 +31,8 @@ public class MeshCutting : MonoBehaviour {
 		lineRenderer = GetComponent<LineRenderer>();
 	}
 
+
+
 	void Start () {
 		// Initialize everything
 		previousDistance = Mathf.Infinity;
@@ -38,7 +40,7 @@ public class MeshCutting : MonoBehaviour {
 		alignedVerts = new List<Vector3>();
 		vertices = new List<Vector3>();
 		triangles = new List<int>();
-		mesh = body.GetComponent<MeshFilter>().mesh;
+		mesh = skin.GetComponent<MeshFilter>().mesh;
 		originalFaces = mesh.triangles;
 
 		foreach (Vector3 vertice in mesh.vertices) {
@@ -62,12 +64,13 @@ public class MeshCutting : MonoBehaviour {
 		transform.position = pos;*/
 
 		// Mesh code
-		mesh = body.GetComponent<MeshFilter>().mesh;
+		mesh = skin.GetComponent<MeshFilter>().mesh;
 
 		// Events
 		if (Input.GetMouseButton (0)) {
 			//draw();
-			simpleMeshCutting();
+			bool useMouse = true;
+			simpleMeshCutting(useMouse);
 		}
 
 		if (Input.GetMouseButtonUp (0)) {
@@ -194,15 +197,18 @@ public class MeshCutting : MonoBehaviour {
 		mesh.RecalculateNormals();
 	}
 
-	void simpleMeshCutting()
+	void simpleMeshCutting(bool useMouse)
 	{
 		// Simple click mech cutting below
 		
-		Vector3 mouseClickPos = tool.transform.position;
-		//print ("mouse: " + mouseClickPos.ToString ());
-		Vector3 nearestPoint = NearestVertexTo(mouseClickPos);
-		//print ("nearest: " + nearestPoint.ToString ());
 		var n = 0;
+		if (useMouse) {
+			Vector3 mouseClickPos = tool.transform.position;
+			//print ("mouse: " + mouseClickPos.ToString ());
+			Vector3 nearestPoint = NearestVertexTo(mouseClickPos);
+			//print ("nearest: " + nearestPoint.ToString ());
+		} else {
+		}
 		
 		for(int i = 0; i < triangles.Count-2; i+=3){
 			var vertPos1 = triangles[i];
