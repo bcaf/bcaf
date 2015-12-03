@@ -6,6 +6,8 @@ public class OrganInteraction : MonoBehaviour {
 	void OnMouseDown(){
 		if (gameObject.GetComponent<Rigidbody> () == null) {
 			Rigidbody gameObjectsRigidBody = gameObject.AddComponent<Rigidbody> ();
+			gameObjectsRigidBody.mass = 100;
+			gameObjectsRigidBody.constraints = RigidbodyConstraints.FreezePositionY;
 		}
 	}
 

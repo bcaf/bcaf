@@ -8,6 +8,8 @@ public class ChangeTexture : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		StartCoroutine(BlinkTimer());
 	
 	}
 	
@@ -19,6 +21,23 @@ public class ChangeTexture : MonoBehaviour {
 			currentTexture %= textures.Length;
 			GetComponent<Renderer>().material.mainTexture = textures[currentTexture];
 		}
+
+		if (Input.GetMouseButton (0)) {
+			GetComponent<Renderer>().material.mainTexture = textures[2];
+		}
+
+		if (Input.GetMouseButtonUp (0)) {
+			GetComponent<Renderer>().material.mainTexture = textures[0];
+		}
+
 	
+	}
+
+	public IEnumerator BlinkTimer() {
+		yield return new WaitForSeconds(Random.Range(3.0f, 6.0f));
+		GetComponent<Renderer>().material.mainTexture = textures[3];
+		yield return new WaitForSeconds(0.1f);
+		GetComponent<Renderer>().material.mainTexture = textures[0];
+		StartCoroutine(BlinkTimer());
 	}
 }
