@@ -42,6 +42,7 @@ class EventDrainBlood : Event {
     
     //Unity's Update function
     void Update() {
+        
         if (state == STATE_UNDRAINED) {
             Fiducial syringe = body.getFiducial(Body.FID_SCALPEL);
             if (syringe.active) {
@@ -65,7 +66,7 @@ class EventDrainBlood : Event {
                 //this.body.events.Add(new EventSuture());
             }
         }
-        
+
         draw();
     }
     

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
@@ -76,7 +77,7 @@ public class globalsettings : MonoBehaviour {
     public TcpClient clientUpdate;
     public TcpClient clientDelete;
 
-    public Dictionary<int, Fiducial> fd;
+    public Dictionary<int, Fiducial> fd = new Dictionary<int, Fiducial>();
 
     void Awake()
     {
@@ -93,8 +94,6 @@ public class globalsettings : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-        fd = new Dictionary<int, Fiducial>();
 
         try
         {
@@ -140,8 +139,15 @@ public class globalsettings : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (fd.ContainsKey(2))
-            Play();
+
+        if (EditorApplication.currentScene == "mainmenu")
+        {
+            // TODO: Change check to a more robust one.
+            if (fd.ContainsKey(2))
+            {
+                Play();
+            }
+        }
 
         // Comm paste
         if (clientNew != null && clientNew.Available > 0)

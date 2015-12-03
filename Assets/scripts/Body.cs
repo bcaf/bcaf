@@ -97,12 +97,8 @@ class Body : MonoBehaviour {
      * */
 
     public Dictionary<int, Fiducial> fd;
-
-    globalsettings gs;
     
     void Start() {
-
-        gs = GameObject.Find("GlobalSettings").GetComponent<globalsettings>();
 
         events = new List<Event>();
         
@@ -112,7 +108,7 @@ class Body : MonoBehaviour {
         
         changeStateToGameNotStarted();
 
-        fd = gs.fd;
+        fd = globalsettings.Instance.fd;
         /*
         fd = new Dictionary<int, Fiducial>();
 
@@ -149,6 +145,7 @@ class Body : MonoBehaviour {
     
     void changeStateToIngame() {
         //events.Add(new EventCutOpen(this, new Vector3(-75.0F, 58.0F, -38.0F))); //Add initial event
+
         GameObject eventBleed = Instantiate(BleedEventPrefab);
         //eventBleed.transform.parent = GameObject.Find("Canvas").transform;
         eventBleed.transform.SetParent(GameObject.Find("Canvas").transform, false);
@@ -246,6 +243,7 @@ class Body : MonoBehaviour {
     }
     
     void updateIngame() {
+
         Vector3 mouseWorldPos = getMouseToWorldPosition();
         //Debug.Log("mouseWorldPos: " + mouseWorldPos.ToString());
         
@@ -291,7 +289,6 @@ class Body : MonoBehaviour {
                 Debug.Log("Bloodbag activated");
             }
         }
-
     }
     
     void updateGameOver() {
