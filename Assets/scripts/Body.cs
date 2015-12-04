@@ -169,7 +169,6 @@ class Body : MonoBehaviour {
         
         if (this.state == "notstarted") { updateGameNotStarted();
         } else if (this.state == "ingame") { updateIngame();
-        } else if (this.state == "ingame") {
         } else if (this.state == "gameover") {
         }
 
@@ -302,6 +301,7 @@ class Body : MonoBehaviour {
     void OnGUI() {
         GameObject.Find("label_blood").GetComponent<Text>().text = 
             "Blood left:\n" + this.bloodAmount + " ml";
+        GameObject.Find("blood_bar").GetComponent<Image>().fillAmount = this.bloodAmount / START_BLOOD_AMOUNT;
 
         string label_cutopenevent_text = "(cutopenevent\nnot active)";
 
