@@ -25,11 +25,6 @@ class EventDrainBlood : Event {
         psEmissionRate = ps.emissionRate;
     }
 
-    public void setBody(Body body)
-    {
-        this.body = body;
-    }
-
     void Start()
     {
         state = STATE_UNDRAINED;
@@ -44,10 +39,10 @@ class EventDrainBlood : Event {
     void Update() {
         
         if (state == STATE_UNDRAINED) {
-            Fiducial syringe = body.getFiducial(Body.FID_SCALPEL);
+            Fiducial syringe = body.getFiducial(Body.FID_SYRINGE);
             if (syringe.active) {
                 float distanceToEvent = (syringe.position - this.get2dPositionAsVector3()).magnitude;
-                if (distanceToEvent < 20.0F) {
+                if (distanceToEvent > 0.5F) {
                     Debug.Log("Syringe is placed, but too far away, at distance " +
                             distanceToEvent);
                 } else {

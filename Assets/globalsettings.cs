@@ -140,7 +140,7 @@ public class globalsettings : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (EditorApplication.currentScene == "mainmenu")
+        if (EditorApplication.currentScene == "Scene: Assets/scenes/mainmenu.unity");
         {
             // TODO: Change check to a more robust one.
             if (fd.ContainsKey(2))

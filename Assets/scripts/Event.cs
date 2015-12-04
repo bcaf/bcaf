@@ -25,6 +25,11 @@ class Event : MonoBehaviour {
     {
         return new Vector3(this.position.x, 0.0F, this.position.z);
     }
+
+    public void setBody(Body body)
+    {
+        this.body = body;
+    }
     
     /*this is called whenever gameOver happens.
     Cleanly stop current animations and things like that.*/

@@ -30,7 +30,8 @@ class EventCutOpen : Event {
         this.body = body_;
         this.position = position_;
         
-        state = STATE_NEEDS_BACTERIAL;
+        // state = STATE_NEEDS_BACTERIAL;
+        state = STATE_CUTTING;
         bacGelAmount = 0.0F;
         //bacGelAmountNeeded = 20.0F + 10.0F*body.numPlayers;
         bacGelAmountNeeded = 30.0F;
