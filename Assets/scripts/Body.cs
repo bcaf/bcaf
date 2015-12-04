@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.IO;
@@ -148,12 +149,11 @@ class Body : MonoBehaviour {
     
     void changeStateToIngame() {
         //events.Add(new EventCutOpen(this, new Vector3(-75.0F, 58.0F, -38.0F))); //Add initial event
+		this.state = "ingame";
+		Debug.Log ("Game started!");
+		StartCoroutine (RandomizeEvent ());
 
-        GameObject eventBleed = Instantiate(BleedEventPrefab);
-        //eventBleed.transform.parent = GameObject.Find("Canvas").transform;
-        eventBleed.transform.SetParent(GameObject.Find("Canvas").transform, false);
-        eventBleed.GetComponent<EventDrainBlood>().setBody(this);
-        this.state = "ingame";
+        
     }
     
     void changeStateToGameOver() {
@@ -342,4 +342,29 @@ class Body : MonoBehaviour {
             return dummy;
         }
     }
+
+	public IEnumerator RandomizeEvent() {
+		yield return new WaitForSeconds(UnityEngine.Random.Range(5.0f, 10.0f));
+		var randomInt = UnityEngine.Random.Range (0, 2);
+
+		// Start a random event here
+		if (randomInt == 0) {
+			GameObject eventBleed = Instantiate(BleedEventPrefab);
+			//eventBleed.transform.parent = GameObject.Find("Canvas").transform;
+			eventBleed.transform.SetParent(GameObject.Find("Canvas").transform, false);
+			eventBleed.GetComponent<EventDrainBlood>().setBody(this);
+		}
+
+		if (randomInt == 1) {
+			// Start some event here
+			Debug.Log ("Cut something!");
+		}
+
+		if (randomInt == 2) {
+			// Start some event here
+			Debug.Log ("Drain something!");
+		}
+
+		StartCoroutine(RandomizeEvent());
+	}
 }
