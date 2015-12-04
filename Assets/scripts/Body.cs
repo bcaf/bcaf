@@ -343,26 +343,48 @@ class Body : MonoBehaviour {
         }
     }
 
+	public void createBleedEvent () {
+		Debug.Log ("Drain some blood!");
+		GameObject eventBleed = Instantiate(BleedEventPrefab);
+		//eventBleed.transform.parent = GameObject.Find("Canvas").transform;
+		eventBleed.transform.SetParent(GameObject.Find("Canvas").transform, false);
+		eventBleed.GetComponent<EventDrainBlood>().setBody(this);
+	}
+
+	public void createGelEvent () {
+		// Todo: Create gel event here
+	}
+
+	public void createCutEvent () {
+		Debug.Log ("Cut and remove infected organ!");
+		//GameObject eventGel = Instantiate (GelEventPrefab);
+		GameObject eventCut = Instantiate (CutEventPrefab);
+		eventCut.transform.SetParent(GameObject.Find("Canvas").transform, false);
+		eventCut.GetComponent<EventCutOpen>().setBody(this);
+	}
+
+	public void createPussEvent () {
+		Debug.Log ("Drain puss!");
+		GameObject eventPuss = Instantiate (PussEventPrefab);
+		eventPuss.transform.SetParent(GameObject.Find("Canvas").transform, false);
+		eventPuss.GetComponent<EventDrainPuss>().setBody(this);
+	}
+
 	public IEnumerator RandomizeEvent() {
 		yield return new WaitForSeconds(UnityEngine.Random.Range(5.0f, 10.0f));
 		var randomInt = UnityEngine.Random.Range (0, 2);
 
-		// Start a random event here
+		// Start a random event
 		if (randomInt == 0) {
-			GameObject eventBleed = Instantiate(BleedEventPrefab);
-			//eventBleed.transform.parent = GameObject.Find("Canvas").transform;
-			eventBleed.transform.SetParent(GameObject.Find("Canvas").transform, false);
-			eventBleed.GetComponent<EventDrainBlood>().setBody(this);
+			createBleedEvent();
 		}
 
 		if (randomInt == 1) {
-			// Start some event here
-			Debug.Log ("Cut something!");
+			createCutEvent();
 		}
 
 		if (randomInt == 2) {
-			// Start some event here
-			Debug.Log ("Drain something!");
+			createPussEvent();
 		}
 
 		StartCoroutine(RandomizeEvent());
