@@ -73,6 +73,9 @@ class Body : MonoBehaviour {
     public const float START_BLOOD_AMOUNT = 5000.0F;
 
     public GameObject BleedEventPrefab;
+    public GameObject GelEventPrefab;
+    public GameObject PussEventPrefab;
+    public GameObject CutEventPrefab;
     
     public Fiducial[] fs;
     string state; //"notstarted", "ingame" or "gameover"
