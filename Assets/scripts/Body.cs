@@ -324,8 +324,6 @@ class Body : MonoBehaviour {
         }
         */
 
-        Debug.Log("Body: " + bloodAmount);
-
         GameObject.Find("label_cutopenevent").GetComponent<Text>().text = label_cutopenevent_text;
 
         GameObject.Find ("label_statedebug").GetComponent<Text>().text = "STATE: " + this.state;

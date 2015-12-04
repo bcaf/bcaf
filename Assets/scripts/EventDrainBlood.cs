@@ -44,7 +44,7 @@ class EventDrainBlood : Event {
             Fiducial syringe = body.getFiducial(Body.FID_SYRINGE);
             if (syringe.active) {
                 float distanceToEvent = (syringe.position - this.get2dPositionAsVector3()).magnitude;
-                if (distanceToEvent > 0.5F) {
+                if (distanceToEvent < 20.0F) {
                     Debug.Log("Syringe is placed, but too far away, at distance " +
                             distanceToEvent);
                 } else {
