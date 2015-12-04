@@ -7,58 +7,6 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 
-/*
-public class Fiducial {
-    public int id;
-    public Vector3 position;
-    public float rotation;
-    public bool active;
-
-    public Vector2 get2dPosition() {
-        return new Vector2(position.x, position.z);
-    }
-
-    public Fiducial(int id_) {
-        id = id_;
-        position = new Vector3();
-        rotation = 0.0F;
-        active = false;
-    }
-
-    public Fiducial(int id_, Vector3 position_, float rotation_, bool active_)
-    {
-        id = id_;
-        position = position_;
-        rotation = rotation_;
-        active = active_;
-    }
-
-    public void setPosition(Vector3 position_)
-    {
-        position = position_;
-    }
-
-    public void setRotation(float rotation_)
-    {
-        rotation = rotation_;
-    }
-
-    public void setActive()
-    {
-        active = true;
-    }
-
-    public void setInactive()
-    {
-        active = false;
-    }
-
-    public void update() {
-        //update position, rotation, active of id=id
-    }
-}
-*/
-
 class Body : MonoBehaviour {
     private const int NUM_FIDUCIALS = 50;
     private const int NUM_GLOVES = 4;
@@ -158,7 +106,7 @@ class Body : MonoBehaviour {
 		Debug.Log ("Game started!");
 		StartCoroutine (RandomizeEvent ());
 
-        
+        createBleedEvent();
     }
     
     void changeStateToGameOver() {
@@ -170,20 +118,11 @@ class Body : MonoBehaviour {
     }
     
     void Update() {
-        foreach (Event e in this.events) {
-            if (e is EventCutOpen) {
-                ((EventCutOpen)e).update();
-            }
-        }
-        
         if (this.state == "notstarted") { updateGameNotStarted();
         } else if (this.state == "ingame") { updateIngame();
         } else if (this.state == "gameover") {
         }
-
-        
     }
-    
     
     /** Here we update things that happens before the game starts */
     void updateGameNotStarted() {
@@ -386,7 +325,7 @@ class Body : MonoBehaviour {
 	}
 
 	public IEnumerator RandomizeEvent() {
-		yield return new WaitForSeconds(UnityEngine.Random.Range(5.0f, 10.0f));
+        yield return new WaitForSeconds(UnityEngine.Random.Range(5.0f, 10.0f));
 		var randomInt = UnityEngine.Random.Range (0, 3);
 
 		// Start a random event

@@ -137,7 +137,9 @@ public class globalsettings : MonoBehaviour {
         rx *= tableWidth / 2.0F;
         float ry = 2.0F * (fidPosition.z / Screen.height - 0.5F);
         //ry is now -1.0 to 1.0, need to rescale so that max is tableHeight/2 = 1.85/2.0 = 0.925
-        ry *= tableHeight / 2.0F;
+        ry *= -tableHeight / 2.0F;
+        
+        ry += 35.0F;
         return new Vector3(rx, 0.0F, ry); //0 is local pos y for Canvas
     }
 	
@@ -195,6 +197,14 @@ public class globalsettings : MonoBehaviour {
                 fd[Tag].setActive();
                 fd[Tag].setRotation(Angle);
             }
+            
+            if (Tag == 5) {
+                //GameObject.Find("fiducial_debug").GetComponent<Transform>().position = position;
+                //Debug.Log("Updated scalpel fiducial_debug, position: " + position.ToString());
+            } else {
+                //Debug.Log("Tag = " + Tag.ToString());
+            }
+
 
             //Debug.Log("Updating fiducal " + Tag + " at (" + X + "," + Y + ")");
         }

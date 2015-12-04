@@ -23,7 +23,7 @@ class Event : MonoBehaviour {
 
     public Vector3 get2dPositionAsVector3()
     {
-        return new Vector3(this.position.x, 0.0F, this.position.z);
+        return new Vector3(gameObject.transform.position.x, 0.0F, gameObject.transform.position.z);
     }
 
     public void setBody(Body body_)

@@ -12,7 +12,7 @@ class EventDrainPuss : Event {
     float psEmissionRate;
     
     float pussAmount;
-    const float pussRemovedPerSecond = 2.0F;
+    const float pussRemovedPerSecond = 16.0F;
     float pussDrained = 0.0F;
     
     public EventDrainPuss(Body body_) {
@@ -34,13 +34,21 @@ class EventDrainPuss : Event {
     
     //Unity's Update function
     void Update() {
+        
         if (state == STATE_UNDRAINED) {
             Fiducial syringe = body.getFiducial(Body.FID_SYRINGE);
             if (syringe.active) {
-                float distanceToEvent = (syringe.position - this.position).magnitude;
-                if (distanceToEvent > 0.5F) {
-                    Debug.Log("Syringe is placed, but too far away, at distance " +
-                            distanceToEvent);
+                //GameObject.Find("fiducial_debug").GetComponent<Transform>().position =
+                //    (syringe.position + new Vector3(0.0F, 50.0F, 0.0F));
+                //GameObject.Find("fiducial_debug2").GetComponent<Transform>().position =
+                //    (this.get2dPositionAsVector3() + new Vector3(0.0F, 50.0F, 0.0F));
+                //Debug.Log("Syringe position: " + syringe.position.ToString() + " drainbloodpos: " +
+                        //this.get2dPositionAsVector3().ToString());
+                
+                float distanceToEvent = (syringe.position - this.get2dPositionAsVector3()).magnitude;
+                if (distanceToEvent > 20.0F) {
+                    //Debug.Log("Syringe is placed, but too far away, at distance " +
+                            //distanceToEvent);
                 } else {
                     this.pussDrained += pussRemovedPerSecond * Time.deltaTime;
                 }
@@ -49,11 +57,8 @@ class EventDrainPuss : Event {
         
         if (this.pussDrained >= this.pussAmount) { //Initiate drainBloodEvent or SutureEvent)
             state = STATE_DRAINED;
-            if (body.chance(0.7F)) {
-                //this.body.events.Add(new EventDrainBlood());
-            } else {
-                //this.body.events.Add(new EventSuture());
-            }
+            progressBar.enabled = false;
+            Destroy(this);
         }
         
         draw();
