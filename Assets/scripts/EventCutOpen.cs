@@ -27,7 +27,7 @@ class EventCutOpen : Event {
     
     public EventCutOpen(Body body_, Vector3 position_) {
         //Event(body_);
-        this.body = body_;
+        body = body_;
         this.position = position_;
         
         // state = STATE_NEEDS_BACTERIAL;

@@ -14,6 +14,7 @@ class EventDrainBlood : Event {
     float bloodAmount;
     const float bloodRemovedPerSecond = 2.0F;
     float bloodDrained = 0.0F;
+    float bloodloss;
     
     public EventDrainBlood(Body body_) {
         //Event(body_);
@@ -27,13 +28,14 @@ class EventDrainBlood : Event {
 
     void Start()
     {
+        //body = GameObject.Find("Main Camera").GetComponent<Body>();
         state = STATE_UNDRAINED;
         bloodAmount = 20.0F + 10.0F * body.numPlayers;
         progressBar = gameObject.GetComponent<Image>();
         ps = gameObject.GetComponent<ParticleSystem>();
         psEmissionRate = ps.emissionRate;
-    }
-    
+        bloodloss = 5.0F;        
+    }    
     
     //Unity's Update function
     void Update() {
@@ -50,6 +52,7 @@ class EventDrainBlood : Event {
                     //Debug.Log("Drained blood: " + bloodDrained);
                 }
             }
+            body.decreaseBloodAmount(bloodloss);
         }
         
         if (this.bloodDrained >= this.bloodAmount) { //Initiate drainBloodEvent or SutureEvent)
@@ -60,7 +63,11 @@ class EventDrainBlood : Event {
             } else {
                 //this.body.events.Add(new EventSuture());
             }
+            Destroy(this);
         }
+
+        
+        //Debug.Log("DrainBlood: " + body.bloodAmount + ", decrease: " + (bloodloss));
 
         draw();
     }

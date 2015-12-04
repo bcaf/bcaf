@@ -2,7 +2,7 @@ using UnityEngine;
 
 class Event : MonoBehaviour {
     bool active;
-    protected Body body;
+    protected static Body body;
 	public Vector3 position;
 
     public Event() {}
@@ -26,9 +26,9 @@ class Event : MonoBehaviour {
         return new Vector3(this.position.x, 0.0F, this.position.z);
     }
 
-    public void setBody(Body body)
+    public void setBody(Body body_)
     {
-        this.body = body;
+        body = body_;
     }
     
     /*this is called whenever gameOver happens.

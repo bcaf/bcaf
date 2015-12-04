@@ -28,7 +28,7 @@ class EventBloodBag : Event {
                         distanceToEvent);
             } else {
                 float bloodAmountPerSecond = (bloodAmountLeftInBag / START_BLOOD_AMOUNT) * 50.0F;
-                this.body.bloodAmount += bloodAmountPerSecond * Time.deltaTime;
+                body.bloodAmount += bloodAmountPerSecond * Time.deltaTime;
             }
         }
         

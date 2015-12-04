@@ -79,6 +79,8 @@ public class globalsettings : MonoBehaviour {
 
     public Dictionary<int, Fiducial> fd = new Dictionary<int, Fiducial>();
 
+    bool isPlaying;
+
     void Awake()
     {
         if (Instance == null)
@@ -94,6 +96,8 @@ public class globalsettings : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        isPlaying = false;
 
         try
         {
@@ -140,9 +144,8 @@ public class globalsettings : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (EditorApplication.currentScene == "Scene: Assets/scenes/mainmenu.unity");
+        if (EditorApplication.currentScene.Equals("Assets/scenes/mainmenu.unity") && !isPlaying)
         {
-            // TODO: Change check to a more robust one.
             if (fd.ContainsKey(2))
             {
                 Play();
@@ -214,6 +217,7 @@ public class globalsettings : MonoBehaviour {
 
     public void Play()
     {
+        isPlaying = true;
         Application.LoadLevel("mainscene");
     }
 }

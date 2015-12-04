@@ -83,7 +83,7 @@ class Body : MonoBehaviour {
     public List<Event> events;
     
     public int numPlayers;
-    public float bloodAmount;
+    public volatile float bloodAmount;
 
     /*
     public StreamReader srNew;
@@ -142,6 +142,11 @@ class Body : MonoBehaviour {
         finally { }
          * */
     }
+
+    public void decreaseBloodAmount(float amount)
+    {
+        bloodAmount -= amount;
+    }
     
     void changeStateToGameNotStarted() {
         this.state = "notstarted";
@@ -161,6 +166,7 @@ class Body : MonoBehaviour {
         foreach (Event e in events) {
             e.gameOverSignal();
         }
+        Debug.Log("I am dead");
     }
     
     void Update() {
@@ -318,6 +324,8 @@ class Body : MonoBehaviour {
         }
         */
 
+        Debug.Log("Body: " + bloodAmount);
+
         GameObject.Find("label_cutopenevent").GetComponent<Text>().text = label_cutopenevent_text;
 
         GameObject.Find ("label_statedebug").GetComponent<Text>().text = "STATE: " + this.state;
@@ -343,12 +351,17 @@ class Body : MonoBehaviour {
         }
     }
 
+    // Canvas X: (-50,50) Y: (70,-25)
+
 	public void createBleedEvent () {
 		Debug.Log ("Drain some blood!");
 		GameObject eventBleed = Instantiate(BleedEventPrefab);
 		//eventBleed.transform.parent = GameObject.Find("Canvas").transform;
 		eventBleed.transform.SetParent(GameObject.Find("Canvas").transform, false);
 		eventBleed.GetComponent<EventDrainBlood>().setBody(this);
+        int x = UnityEngine.Random.Range(-50, 50);
+        int y = UnityEngine.Random.Range(-25, 70);
+        eventBleed.GetComponent<RectTransform>().localPosition = new Vector3(x, y, 0);
 	}
 
 	public void createGelEvent () {
@@ -361,6 +374,7 @@ class Body : MonoBehaviour {
 		GameObject eventCut = Instantiate (CutEventPrefab);
 		eventCut.transform.SetParent(GameObject.Find("Canvas").transform, false);
 		eventCut.GetComponent<EventCutOpen>().setBody(this);
+
 	}
 
 	public void createPussEvent () {
@@ -368,11 +382,14 @@ class Body : MonoBehaviour {
 		GameObject eventPuss = Instantiate (PussEventPrefab);
 		eventPuss.transform.SetParent(GameObject.Find("Canvas").transform, false);
 		eventPuss.GetComponent<EventDrainPuss>().setBody(this);
+        int x = UnityEngine.Random.Range(-50, 50);
+        int y = UnityEngine.Random.Range(-25, 70);
+        eventPuss.GetComponent<RectTransform>().localPosition = new Vector3(x, y, 0);
 	}
 
 	public IEnumerator RandomizeEvent() {
 		yield return new WaitForSeconds(UnityEngine.Random.Range(5.0f, 10.0f));
-		var randomInt = UnityEngine.Random.Range (0, 2);
+		var randomInt = UnityEngine.Random.Range (0, 3);
 
 		// Start a random event
 		if (randomInt == 0) {
@@ -380,7 +397,7 @@ class Body : MonoBehaviour {
 		}
 
 		if (randomInt == 1) {
-			createCutEvent();
+			//createCutEvent();
 		}
 
 		if (randomInt == 2) {
