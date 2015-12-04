@@ -217,11 +217,38 @@ public class MeshCutting : MonoBehaviour {
 		
 		updateMesh();
 	}
+    
+	public void simpleMeshCuttingManualFiducial(Vector3 removeAtPos)
+	{
+		var n = 0;
+        //Vector3 mouseClickPos = tool.transform.position;
+        //print ("mouse: " + mouseClickPos.ToString ());
+        Vector3 nearestPoint = NearestVertexTo(removeAtPos);
+        Debug.Log("nearestPoint:" + nearestPoint.ToString());
+        //print ("nearest: " + nearestPoint.ToString ());
+		
+		for(int i = 0; i < triangles.Count-2; i+=3){
+			var vertPos1 = triangles[i];
+			var vertPos2 = triangles[i+1];
+			var vertPos3 = triangles[i+2];
+			if((vertices[vertPos1] == nearestPoint) || (vertices[vertPos2] == nearestPoint) || (vertices[vertPos3] == nearestPoint))
+			{
+				Debug.Log("removeAt(i) where i = " + i.ToString());
+				triangles.RemoveAt(i);
+				triangles.RemoveAt(i);
+				triangles.RemoveAt(i);
+				break;
+			}
+		}
+		
+		updateMesh();
+	}
 
 	public Vector3 NearestVertexTo(Vector3 point)
 	{
 		//Debug.Log ("point: " + point.ToString ());
 		//point = point + new Vector3(0.0F, 0.0F, -11.0F);
+        point = new Vector3(point.x, point.y, point.z - 15.0F);
 
 		float minDistanceSqr = Mathf.Infinity;
 		Vector3 nearestVertex = Vector3.zero;

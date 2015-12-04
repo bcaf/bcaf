@@ -198,7 +198,10 @@ public class globalsettings : MonoBehaviour {
                 fd[Tag].setRotation(Angle);
             }
             
-            if (Tag == 5) {
+            if (Tag == 7) {
+                //GetComponent
+                //GameObject.Find("skin").GetComponent<MeshCutting>().simpleMeshCuttingManualFiducial(position);
+;
                 //GameObject.Find("fiducial_debug").GetComponent<Transform>().position = position;
                 //Debug.Log("Updated scalpel fiducial_debug, position: " + position.ToString());
             } else {

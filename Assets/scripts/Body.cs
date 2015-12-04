@@ -20,6 +20,8 @@ class Body : MonoBehaviour {
     public const int FID_BLOODBAG = 6;
     public const int FID_SYRINGE = 7;
     public const float START_BLOOD_AMOUNT = 5000.0F;
+    
+    public float numAliveSeconds = 0.0F;
 
     public GameObject BleedEventPrefab;
     public GameObject GelEventPrefab;
@@ -115,6 +117,8 @@ class Body : MonoBehaviour {
             e.gameOverSignal();
         }
         Debug.Log("I am dead");
+        
+        //Application.LoadLevel("mainmenu");
     }
     
     void Update() {
@@ -191,11 +195,15 @@ class Body : MonoBehaviour {
     }
     
     void updateIngame() {
-
+        
+        GameObject.Find("alivetimer").GetComponent<Text>().text =
+            "Alive for\n" + Time.realtimeSinceStartup.ToString("0.0") + " seconds";
+        
         Vector3 mouseWorldPos = getMouseToWorldPosition();
         //Debug.Log("mouseWorldPos: " + mouseWorldPos.ToString());
         
         if (bloodAmount <= 0.0F) {
+            numAliveSeconds = Time.realtimeSinceStartup;
             changeStateToGameOver();
         }
 
@@ -240,7 +248,10 @@ class Body : MonoBehaviour {
     }
     
     void updateGameOver() {
+        GameObject.Find("alivetimer").GetComponent<Text>().text =
+            "DEAD!\nSurvived\n" + numAliveSeconds.ToString("0.0") + " seconds";
     }
+    
     
     //TODO: drawgui
     void drawGUI() {
@@ -248,8 +259,8 @@ class Body : MonoBehaviour {
     }
     
     void OnGUI() {
-        GameObject.Find("label_blood").GetComponent<Text>().text = 
-            "Blood left:\n" + this.bloodAmount + " ml";
+        GameObject.Find("label_blood").GetComponent<Text>().text =
+            "Blood left:\n" + this.bloodAmount.ToString("0.0") + " ml";
         GameObject.Find("blood_bar").GetComponent<Image>().fillAmount = this.bloodAmount / START_BLOOD_AMOUNT;
 
         string label_cutopenevent_text = "(cutopenevent\nnot active)";
@@ -347,6 +358,7 @@ class Body : MonoBehaviour {
 
 		if (randomInt == 1) {
 			//createCutEvent();
+			createBleedEvent();
 		}
 
 		if (randomInt == 2) {

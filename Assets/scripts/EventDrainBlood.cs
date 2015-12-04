@@ -12,7 +12,7 @@ class EventDrainBlood : Event {
     float psEmissionRate;
     
     float bloodAmount;
-    const float bloodRemovedPerSecond = 20.0F;
+    const float bloodRemovedPerSecond = 30.0F;
     float bloodDrained = 0.0F;
     float bloodloss;
     
@@ -30,7 +30,7 @@ class EventDrainBlood : Event {
         progressBar = gameObject.GetComponent<Image>();
         ps = gameObject.GetComponent<ParticleSystem>();
         psEmissionRate = ps.emissionRate;
-        bloodloss = 5.0F;
+        bloodloss = 15.0F;
     }
     
     //Unity's Update function
