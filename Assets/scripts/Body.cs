@@ -126,12 +126,13 @@ class Body : MonoBehaviour {
     
     /** Here we update things that happens before the game starts */
     void updateGameNotStarted() {
-        bool gameStarted = false;
+        //bool gameStarted = false;
+        bool gameStarted = true;
 
-            //debug: press space to start
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                gameStarted = true;
-            }
+        //debug: press space to start
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            gameStarted = true;
+        }
 
         if (gameStarted) {
 //            int numActiveGloves = getFiducial(GLOVE0).active + getFiducial(GLOVE1).active +
@@ -325,8 +326,19 @@ class Body : MonoBehaviour {
 	}
 
 	public IEnumerator RandomizeEvent() {
-        yield return new WaitForSeconds(UnityEngine.Random.Range(5.0f, 10.0f));
+        //yield return new WaitForSeconds(UnityEngine.Random.Range(5.0f, 10.0f));
+        if (Time.realtimeSinceStartup < 20.0F) {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f, 3.5f));
+        } else if (Time.realtimeSinceStartup < 35.0F) {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(1.5f, 3.4f));
+        } else if (Time.realtimeSinceStartup < 50.0F) {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(1.0f, 2.8f));
+        } else {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.3f, 2.4f));
+        }
+        
 		var randomInt = UnityEngine.Random.Range (0, 3);
+        Debug.Log("New event");
 
 		// Start a random event
 		if (randomInt == 0) {

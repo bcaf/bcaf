@@ -12,7 +12,7 @@ class EventDrainBlood : Event {
     float psEmissionRate;
     
     float bloodAmount;
-    const float bloodRemovedPerSecond = 16.0F;
+    const float bloodRemovedPerSecond = 20.0F;
     float bloodDrained = 0.0F;
     float bloodloss;
     
@@ -25,7 +25,6 @@ class EventDrainBlood : Event {
 
     void Start()
     {
-        //body = GameObject.Find("Main Camera").GetComponent<Body>();
         state = STATE_UNDRAINED;
         bloodAmount = 20.0F + 10.0F * body.numPlayers;
         progressBar = gameObject.GetComponent<Image>();

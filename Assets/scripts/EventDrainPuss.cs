@@ -12,8 +12,9 @@ class EventDrainPuss : Event {
     float psEmissionRate;
     
     float pussAmount;
-    const float pussRemovedPerSecond = 16.0F;
+    const float pussRemovedPerSecond = 10.0F;
     float pussDrained = 0.0F;
+    
     
     public EventDrainPuss(Body body_) {
         //Event(body_);
@@ -51,8 +52,10 @@ class EventDrainPuss : Event {
                             //distanceToEvent);
                 } else {
                     this.pussDrained += pussRemovedPerSecond * Time.deltaTime;
+                    
                 }
             }
+            //body.decreaseBloodAmount(bloodloss * Time.deltaTime);
         }
         
         if (this.pussDrained >= this.pussAmount) { //Initiate drainBloodEvent or SutureEvent)
