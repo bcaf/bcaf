@@ -25,10 +25,10 @@ p a:hover {
 }
 .header div ul {
 	list-style:none;
-	margin:0 0 0 150px;
+	margin: 10px auto;
 	overflow:hidden;
 	padding:2px 0 0;
-	width:685px;
+	width:331px;
 }
 .header div ul li:first-child {
 	margin:0;
@@ -58,8 +58,8 @@ p a:hover {
 }
 .header div a#logo {
 	display:block;
-	margin:25px auto 0;
-	width:760px;
+	margin: 10px auto;
+	width: 200px;
 }
 .header div a.logo {
 	display:block;
@@ -80,14 +80,43 @@ p a:hover {
 	width: inherit;
 }
 /*------------------------- Body ------------------------*/
+iframe {
+	display: block;
+	margin: 0 auto;
+	position: relative;
+	top: -50px;
+}
+.section {
+	color: #2f2f2f;
+}
+
+.about {
+	color: #D0D0D0;
+	background: rgba(80,80,80,0.9) !important;
+}
+
+.section hr {
+	height: 5px;
+	background-color: #4f4f4f;
+	border: none;
+}
+
+.section h3 {
+	text-align: center;
+}
+
+.section p {
+	font-size: 14pt;
+}
+
 .body {
 	background:url(../images/bloodcells.jpg);
 }
 .body.home {
-	margin: -600px 0 0;
 }
 .body div {
 	background:url(../images/border-content.png) repeat-x 0 0;
+	margin-top: 100px;
 }
 .body div div {
 	background:none;
@@ -96,8 +125,8 @@ p a:hover {
 }
 .body div div.section {
 	background:none;
-	overflow:hidden;
-	padding:287px 0 138px;
+	padding: 0;
+	height: 300px;
 }
 .body div div.section div:first-child {
 	margin:0;
@@ -203,23 +232,26 @@ p a:hover {
 	letter-spacing:0.075em;
 }
 .body div div.events {
-	min-height:1001px;
 }
 .body div div.events ul {
 	list-style:none outside none;
-	margin:0 0 36px;
+	margin:0 auto;
 	overflow:hidden;
-	padding:52px 10px 0;
-	width:940px;
+	padding:50px 0;
 }
 .body div div.events ul li {
 	float:left;
 	margin:0 0 0 35px;
 	width:290px;
 }
+.body div div.events ul li:last-child {
+	float:right;
+	margin:0 0 0 35px;
+	width:290px;
+}
 .body div div.events ul li h3 {
 	text-align:center;
-	color:#7e7e7e;
+	color:#E0E0E0;
 	font-size:20px;
 	text-transform:uppercase;
 	font-weight:normal;
@@ -230,7 +262,7 @@ p a:hover {
 	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 .body div div.events ul li p {
-	color:#7e7e7e;
+	color:#C1C1C1;
 	font-size:14px;
 	line-height:24px;
 	margin:22px 0 0;
@@ -238,7 +270,7 @@ p a:hover {
 	padding: 0;
 }
 .body div div.events p {
-	color:#7e7e7e;
+	color:#C1C1C1;
 	font-size:14px;
 	line-height:24px;
 	margin:0;
@@ -339,9 +371,7 @@ p a:hover {
 	letter-spacing:0.05em;
 }
 .body div div.about {
-	min-height:951px;
-	padding: 50px 10px 0;
-	width:940px;
+	padding: 10px;
 }
 .body div div.about h4 {
 	color:#7e7e7e;
@@ -360,7 +390,7 @@ p a:hover {
 	margin:0;
 }
 .body div div.about p {
-	color:#7e7e7e;
+	color:#D0D0D0;
 	font-size:14px;
 	line-height:30px;
 	margin:2px 0 58px;
